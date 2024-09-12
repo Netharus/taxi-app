@@ -52,9 +52,5 @@ public class DriverController {
         driverService.deleteDriver(driverId);
     }
 
-    //TODO вернуть что-то
-    @GetMapping
-    public Double getRatingById(@RequestParam Long driverId){
-        return driverService.getRating(driverId);
-    }
+
 }
