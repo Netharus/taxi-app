@@ -11,6 +11,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,18 +25,17 @@ public class DriverController {
     private final DriverService driverService;
 
     @PostMapping
-    //TODO study statuses
     @ResponseStatus(HttpStatus.CREATED)
-    public void createDriver(@RequestBody DriverCreateDto driverCreateDto){
-        driverService.createDriver(driverCreateDto);
+    public DriverResponse createDriver(@RequestBody DriverCreateDto driverCreateDto){
+        return driverService.createDriver(driverCreateDto);
     }
 
 
     //TODO
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public void updateDriver(@RequestBody DriverUpdateDto driverUpdateDto){
-        driverService.updateDriver(driverUpdateDto);
+    public DriverResponse updateDriver(@RequestBody DriverUpdateDto driverUpdateDto){
+        return driverService.updateDriver(driverUpdateDto);
     }
 
     @GetMapping
@@ -46,9 +46,9 @@ public class DriverController {
         Pageable pageable=PageRequest.of(page, sizePerPage, sortDirection, sortField.getDatabaseFieldName());
         return driverService.findAllByPage(pageable);
     }
-    @DeleteMapping
+    @DeleteMapping("/{driverId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDriver(@RequestParam Long driverId ){
+    public void deleteDriver(@PathVariable Long driverId){
         driverService.deleteDriver(driverId);
     }
 

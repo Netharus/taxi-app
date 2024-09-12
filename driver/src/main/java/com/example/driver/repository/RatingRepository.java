@@ -1,7 +1,10 @@
 package com.example.driver.repository;
 
+import com.example.driver.model.Driver;
 import com.example.driver.model.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RatingRepository extends JpaRepository<Rating,Long> {
+
+    void deleteAllByDriverId(Long driverId);
 }
