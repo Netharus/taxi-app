@@ -5,3 +5,9 @@ databaseChangeLog:
   - include:
       file: v1-create-rating-table-changelog.yaml
       relativeToChangelogFile: true
+  - include:
+      file: v2-add-data-driver-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v2-add-data-rating-table.yaml
+      relativeToChangelogFile: true

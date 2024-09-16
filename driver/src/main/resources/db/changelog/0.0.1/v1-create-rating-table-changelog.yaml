@@ -2,6 +2,11 @@ databaseChangeLog:
   - changeSet:
       id: v 1-2-1
       author: Mikhail Kondratsiuk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: rating
       changes:
         - createTable:
             tableName: rating
@@ -35,3 +40,5 @@ databaseChangeLog:
             tableName: rating
         - dropAllForeignKeyConstraints:
             baseTableName: fk_rating_driver_id
+
+
