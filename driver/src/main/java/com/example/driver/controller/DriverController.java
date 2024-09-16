@@ -11,7 +11,6 @@ import org.springframework.data.domain.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +30,6 @@ public class DriverController {
     }
 
 
-    //TODO
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public DriverResponse updateDriver(@RequestBody DriverUpdateDto driverUpdateDto){
@@ -39,6 +37,7 @@ public class DriverController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Page<DriverResponse> findAllByPage(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int sizePerPage,
                               @RequestParam(defaultValue = "ID") SortField sortField,
@@ -52,5 +51,10 @@ public class DriverController {
         driverService.deleteDriver(driverId);
     }
 
+    @GetMapping("/{rating}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DriverResponse> getDriversByRating(@PathVariable Double rating){
+        return driverService.findDriversByRating(rating);
+    }
 
 }

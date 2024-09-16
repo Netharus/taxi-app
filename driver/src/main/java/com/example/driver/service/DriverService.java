@@ -3,6 +3,7 @@ package com.example.driver.service;
 import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
+import com.example.driver.exceptions.ObjectNotValidException;
 import com.example.driver.mapper.DriverMapper;
 import com.example.driver.model.Driver;
 import com.example.driver.model.Rating;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,7 +30,7 @@ public class DriverService {
 
     private final RatingService ratingService;
 
-    private final ObjectsValidatorImp objectValidator;
+    private final ObjectsValidatorImp<DriverCreateDto> objectValidator;
 
     //TODO Add first rating
     public DriverResponse createDriver(DriverCreateDto driverCreateDto){
@@ -48,19 +50,21 @@ public class DriverService {
         List<Driver> drivers =driverRepository.findAll();
         return driverMapper.toDriverResponseList(drivers);
     }
-    //TODO добавить валидацию
+
     public Double getRating(Long id){
         Driver driver=driverRepository.findById(id).get();
-        Double average = Double.valueOf(0);
+        Double average = (double) 0;
         for(Rating num: driver.getRatingList()){
             average+=num.getGrade();
         }
         average/=driver.getRatingList().size();
         return average;
     }
-    //TODO добавить валидацию
-    public void deleteDriver(Long id){
-       ratingService.deleteByDriver(id);
+
+    public void deleteDriver(Long id) throws ObjectNotValidException {
+        Driver driver=driverRepository.findById(id).isPresent()?driverRepository.findById(id).get():null;
+        if(driver==null) throw new ObjectNotValidException(Collections.singleton("Driver not found"));
+        ratingService.deleteByDriver(id);
         driverRepository.deleteById(id);
     }
 
@@ -78,10 +82,17 @@ public class DriverService {
     }
 
     public Page<DriverResponse> findAllByPage(Pageable pageable) {
-        return driverRepository.findAll(pageable).map(driver -> {
-            return driverMapper.toDriverResponse(driver,getRating(driver.getId()));
-        });
+        return driverRepository.findAll(pageable).map(driver ->
+                driverMapper.toDriverResponse(driver,getRating(driver.getId()))
+        );
     }
+    public List<DriverResponse> findDriversByRating(Double rating) {
 
-
+       List<Rating> ratingList= ratingService.getDriverWithRating(rating);
+       List<Driver> driverList = new ArrayList<>();
+       ratingList.forEach(obj->driverList.add(obj.getDriver()));
+       List<DriverResponse> driverResponseList = new ArrayList<>();
+       driverList.forEach(obj->driverResponseList.add(driverMapper.toDriverResponse(obj,getRating(obj.getId()))));
+       return driverResponseList;
+    }
 }

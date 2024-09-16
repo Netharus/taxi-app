@@ -16,5 +16,6 @@ public record DriverUpdateDto(
         String fullName,
         @NotNull @NotEmpty
         String phoneNumber
+
 ) {
 }
