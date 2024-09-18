@@ -6,7 +6,7 @@ import java.util.List;
 
 public record DriverResponse(
         Long id,
-        Double rating,
+        Double grade,
         String username,
         String email,
         String fullName,

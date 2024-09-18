@@ -6,12 +6,11 @@ import jakarta.validation.constraints.NotNull;
 
 public record DriverCreateDto(
         @NotNull @NotEmpty
-     String username,
+        String username,
         @Email
-     String email,
+        String email,
         @NotNull @NotEmpty
-     String fullName,
+        String fullName,
         @NotNull @NotEmpty
-     String phoneNumber)
-{
+        String phoneNumber) {
 }

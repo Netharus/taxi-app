@@ -2,12 +2,17 @@ package com.example.driver.repository;
 
 import com.example.driver.model.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface RatingRepository extends JpaRepository<Rating,Long> {
+public interface RatingRepository extends JpaRepository<Rating, Long> {
 
     void deleteAllByDriverId(Long driverId);
 
-    List<Rating> findByGradeGreaterThanEqual(Double garde);
+    @Query("SELECT avg (r.grade) from Rating r where r.driver.id=?1")
+    double averageGradeByDriverId(Long driverId);
+
+
+    List<Rating> findLast10ByDriverId(Long driverId);
 }

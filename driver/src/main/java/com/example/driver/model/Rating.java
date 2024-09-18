@@ -19,7 +19,7 @@ public class Rating {
     @JoinColumn(name = "driver_id")
     private Driver driver;
 
-    @Column(nullable = false,name = "grade")
+    @Column(nullable = false, name = "grade")
     private Integer grade;
 
     @Column(name = "passenger_id")

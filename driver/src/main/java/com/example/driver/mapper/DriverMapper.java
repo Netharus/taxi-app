@@ -13,12 +13,13 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface DriverMapper {
-    @Mapping(target = "rating", source = "rating")
-    DriverResponse toDriverResponse(Driver driver,Double rating);
+
+    DriverResponse toDriverResponse(Driver driver);
 
     List<DriverResponse> toDriverResponseList(List<Driver> drivers);
 
     Driver fromDriverRequest(DriverCreateDto driverCreateDto);
+
     @Mapping(target = "id", source = "id")
     Driver fromDriverUpdate(DriverUpdateDto driverUpdateDto);
 }
