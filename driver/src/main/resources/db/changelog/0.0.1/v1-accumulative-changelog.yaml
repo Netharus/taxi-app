@@ -11,3 +11,6 @@ databaseChangeLog:
   - include:
       file: v2-add-data-rating-table.yaml
       relativeToChangelogFile: true
+  - include:
+      file: v3-add-grade-field-driver.yaml
+      relativeToChangelogFile: true

@@ -13,20 +13,20 @@ import java.util.List;
 @Setter
 @Builder
 @Table(name = "driver")
-public class Driver{
+public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30,nullable = false,unique = true,name = "username")
+    @Column(length = 30, nullable = false, unique = true, name = "username")
     private String username;
 
-    @Column(length = 50, nullable = false,unique = true,name = "email")
+    @Column(length = 50, nullable = false, unique = true, name = "email")
     private String email;
 
     //TODO separate field
     //TODO probably I can separate only name, and save fullName field
-    @Column(nullable = false,name = "full_name")
+    @Column(nullable = false, name = "full_name")
     private String fullName;
 
     @Column(nullable = false, unique = true, name = "phone_number")
@@ -34,6 +34,9 @@ public class Driver{
 
     @OneToMany(mappedBy = "driver")
     private List<Rating> ratingList;
+
+    @Column( name="grade")
+    private Double grade;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "role")
