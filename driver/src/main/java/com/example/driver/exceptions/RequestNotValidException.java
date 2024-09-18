@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Data
 @RequiredArgsConstructor
-public class ObjectNotValidException extends RuntimeException{
+public class RequestNotValidException extends RuntimeException {
 
     private final Set<String> errorMessages;
 
