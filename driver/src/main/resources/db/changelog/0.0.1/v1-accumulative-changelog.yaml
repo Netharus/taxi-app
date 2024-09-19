@@ -11,3 +11,9 @@ databaseChangeLog:
   - include:
       file: v4-add-gender-field-driver.yaml
       relativeToChangelogFile: true
+  - include:
+      file: v6-create-car-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v6-add-car-field-driver.yaml
+      relativeToChangelogFile: true
