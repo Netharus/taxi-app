@@ -1,0 +1,21 @@
+username,email,full_name,phone_number,gender,role
+user_1,user_1@example.com,FirstName_1 LastName_1,1000000001,MALE,ADMIN
+user_2,user_2@example.com,FirstName_2 LastName_2,1000000002,MALE,USER
+user_3,user_3@example.com,FirstName_3 LastName_3,1000000003,FEMALE,ADMIN
+user_4,user_4@example.com,FirstName_4 LastName_4,1000000004,MALE,USER
+user_5,user_5@example.com,FirstName_5 LastName_5,1000000005,FEMALE,ADMIN
+user_6,user_6@example.com,FirstName_6 LastName_6,1000000006,MALE,USER
+user_7,user_7@example.com,FirstName_7 LastName_7,1000000007,MALE,ADMIN
+user_8,user_8@example.com,FirstName_8 LastName_8,1000000008,FEMALE,USER
+user_9,user_9@example.com,FirstName_9 LastName_9,1000000009,MALE,ADMIN
+user_10,user_10@example.com,FirstName_10 LastName_10,1000000010,MALE,USER
+user_11,user_11@example.com,FirstName_11 LastName_11,1000000011,MALE,ADMIN
+user_12,user_12@example.com,FirstName_12 LastName_12,1000000012,MALE,USER
+user_13,user_13@example.com,FirstName_13 LastName_13,1000000013,MALE,ADMIN
+user_14,user_14@example.com,FirstName_14 LastName_14,1000000014,FEMALE,USER
+user_15,user_15@example.com,FirstName_15 LastName_15,1000000015,MALE,ADMIN
+user_16,user_16@example.com,FirstName_16 LastName_16,1000000016,MALE,USER
+user_17,user_17@example.com,FirstName_17 LastName_17,1000000017,FEMALE,ADMIN
+user_18,user_18@example.com,FirstName_18 LastName_18,1000000018,MALE,USER
+user_19,user_19@example.com,FirstName_19 LastName_19,1000000019,MALE,ADMIN
+user_20,user_20@example.com,FirstName_20 LastName_20,1000000020,MALE,USER
