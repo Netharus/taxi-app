@@ -47,6 +47,7 @@ public class DriverService {
         Rating savedRating = ratingService.saveRating(rating);
         savedDriver.getRatingList().add(savedRating);
         savedDriver.setGrade(Double.valueOf(savedRating.getGrade()));
+        driverRepository.save(savedDriver);
         return driverMapper.toDriverResponse(savedDriver);
     }
 
@@ -71,6 +72,7 @@ public class DriverService {
 
         if (savedDriver == null) throw new ResourceNotFound("Driver not found");
 
+        savedDriver.setGender(updateDriver.getGender());
         savedDriver.setEmail(updateDriver.getEmail());
         savedDriver.setFullName(updateDriver.getFullName());
         savedDriver.setUsername(updateDriver.getUsername());

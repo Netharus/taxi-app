@@ -45,8 +45,7 @@ public class DriverController {
                                               @RequestParam(defaultValue = "10") int sizePerPage,
                                               @RequestParam(defaultValue = "ID") SortField sortField,
                                               @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
-                                              @RequestParam(defaultValue = "") String keyword,
-                                              @RequestParam(defaultValue = "") Double rating) {
+                                              @RequestParam(defaultValue = "") String keyword) {
         Pageable pageable = PageRequest.of(page, sizePerPage, sortDirection, sortField.getDatabaseFieldName());
         return driverService.findAllByPage(pageable, keyword);
     }

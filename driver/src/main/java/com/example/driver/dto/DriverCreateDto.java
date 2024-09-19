@@ -12,5 +12,7 @@ public record DriverCreateDto(
         @NotNull @NotEmpty
         String fullName,
         @NotNull @NotEmpty
-        String phoneNumber) {
+        String phoneNumber,
+        @NotNull @NotEmpty
+        String gender) {
 }

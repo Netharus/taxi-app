@@ -6,11 +6,8 @@ databaseChangeLog:
       file: v1-create-rating-table-changelog.yaml
       relativeToChangelogFile: true
   - include:
-      file: v2-add-data-driver-table.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: v2-add-data-rating-table.yaml
-      relativeToChangelogFile: true
-  - include:
       file: v3-add-grade-field-driver.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v4-add-gender-field-driver.yaml
       relativeToChangelogFile: true

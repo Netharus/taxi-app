@@ -10,7 +10,8 @@ public enum SortField {
     USERNAME("username"),
     EMAIL("email"),
     FULL_NAME("fullName"),
-    PHONE_NUMBER("phoneNumber");
+    PHONE_NUMBER("phoneNumber"),
+    GENDER("gender");
 
     private final String databaseFieldName;
 }

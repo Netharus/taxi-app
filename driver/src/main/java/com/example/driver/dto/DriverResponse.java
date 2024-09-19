@@ -1,6 +1,7 @@
 package com.example.driver.dto;
 
 import com.example.driver.model.Rating;
+import com.example.driver.model.enums.Gender;
 
 import java.util.List;
 
@@ -10,5 +11,6 @@ public record DriverResponse(
         String username,
         String email,
         String fullName,
-        String phoneNumber) {
+        String phoneNumber,
+        Gender gender) {
 }

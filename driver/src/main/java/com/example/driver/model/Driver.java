@@ -1,5 +1,6 @@
 package com.example.driver.model;
 
+import com.example.driver.model.enums.Gender;
 import com.example.driver.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,6 +38,10 @@ public class Driver {
 
     @Column( name="grade")
     private Double grade;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name= "gender")
+    private Gender gender;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "role")
