@@ -16,6 +16,8 @@ import com.example.driver.validator.ObjectsValidatorImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -102,4 +104,5 @@ public class DriverService {
 
         return driverMapper.toDriverResponse(driver);
     }
+
 }

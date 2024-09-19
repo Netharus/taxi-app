@@ -11,7 +11,6 @@ public enum SortField {
     EMAIL("email"),
     FULL_NAME("fullName"),
     PHONE_NUMBER("phoneNumber");
-    //TODO how to sort by rating
 
     private final String databaseFieldName;
 }

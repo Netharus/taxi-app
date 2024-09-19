@@ -13,6 +13,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -73,4 +74,8 @@ public class DriverController {
 //        return driverService.findDriversByRating(rating);
 //    }
 
+//    @GetMapping("/rating/{driverId}")
+//    public ResponseEntity<List<Rating>> getRating(@PathVariable Long driverId) {
+//       return driverService.getTenLastrating(driverId);
+//    }
 }
