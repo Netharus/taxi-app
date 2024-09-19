@@ -35,5 +35,10 @@ public class DriverExceptionHandler {
         body.put("message", message);
         return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception exception){
+        return new ResponseEntity<>(exception.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }
