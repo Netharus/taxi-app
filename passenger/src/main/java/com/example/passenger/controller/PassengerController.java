@@ -27,4 +27,16 @@ public class PassengerController {
         return passengerService.updatePassenger(passengerUpdateDto);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PassengerResponseDto getPassenger(@PathVariable Long id) {
+        return passengerService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePassenger(@PathVariable Long id){
+        passengerService.deletePassenger(id);
+    }
+
 }
