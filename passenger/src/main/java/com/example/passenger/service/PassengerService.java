@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -74,6 +75,7 @@ public class PassengerService {
         return passengerMapper.toPassengerResponseDto(passenger);
     }
 
+    @Transactional
     public void deletePassenger(Long id) {
         Passenger passenger= passengerRepository.findById(id).isPresent()?
                 passengerRepository.findById(id).get() : null;

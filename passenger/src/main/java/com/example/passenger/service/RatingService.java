@@ -5,7 +5,7 @@ import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
 import com.example.passenger.model.enums.SortField;
 import com.example.passenger.repository.RatingRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
