@@ -4,6 +4,7 @@ package com.example.passenger.service;
 import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
+import com.example.passenger.dto.RatingCreateDto;
 import com.example.passenger.exceptions.ResourceNotFound;
 import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
@@ -31,6 +32,7 @@ public class PassengerService {
 
     private final ObjectValidatorImp<PassengerCreateDto> passengerCreateDtoValidator;
     private final ObjectValidatorImp<PassengerUpdateDto> passengerUpdateDtoValidator;
+    private final ObjectValidatorImp<RatingCreateDto> ratingCreateDtoValidator;
 
     public PassengerResponseDto createPassenger(PassengerCreateDto passengerCreateDto) {
 
@@ -82,5 +84,15 @@ public class PassengerService {
 
     public Page<PassengerResponseDto> findAllByPage(Pageable pageable, String keyword) {
         return passengerRepository.findAllByPage(keyword,pageable).map(passengerMapper::toPassengerResponseDto);
+    }
+
+    public PassengerResponseDto addRating(RatingCreateDto ratingCreateDto) {
+        ratingCreateDtoValidator.validate(ratingCreateDto);
+        Passenger passenger = passengerRepository.findById(ratingCreateDto.passengerId()).isPresent()?
+                passengerRepository.findById(ratingCreateDto.passengerId()).get() : null;
+        if(passenger == null) {throw new ResourceNotFound("Passenger not found");}
+        passenger.setGrade(ratingService.addRating(ratingCreateDto, passenger));
+        passengerRepository.save(passenger);
+        return passengerMapper.toPassengerResponseDto(passenger);
     }
 }

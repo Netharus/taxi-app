@@ -3,6 +3,7 @@ package com.example.passenger.controller;
 import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
+import com.example.passenger.dto.RatingCreateDto;
 import com.example.passenger.model.enums.SortField;
 import com.example.passenger.service.PassengerService;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +54,11 @@ public class PassengerController {
                                               @RequestParam(defaultValue = "") String keyword) {
         Pageable pageable = PageRequest.of(page, sizePerPage, sortDirection, sortField.getDatabaseFieldName());
         return passengerService.findAllByPage(pageable, keyword);
+    }
+
+    @PostMapping("/rating")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PassengerResponseDto addRating(@RequestBody RatingCreateDto ratingCreateDto){
+        return passengerService.addRating(ratingCreateDto);
     }
 }
