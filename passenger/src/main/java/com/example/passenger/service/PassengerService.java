@@ -13,6 +13,8 @@ import com.example.passenger.repository.PassengerRepository;
 import com.example.passenger.repository.RatingRepository;
 import com.example.passenger.validator.ObjectValidatorImp;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -76,5 +78,9 @@ public class PassengerService {
         if (passenger == null) {throw new ResourceNotFound("Passenger not found");}
         ratingService.deleteByPassengerId(id);
         passengerRepository.delete(passenger);
+    }
+
+    public Page<PassengerResponseDto> findAllByPage(Pageable pageable, String keyword) {
+        return passengerRepository.findAllByPage(keyword,pageable).map(passengerMapper::toPassengerResponseDto);
     }
 }
