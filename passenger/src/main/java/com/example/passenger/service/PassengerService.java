@@ -3,6 +3,7 @@ package com.example.passenger.service;
 
 import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
+import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
@@ -11,6 +12,7 @@ import com.example.passenger.repository.PassengerRepository;
 import com.example.passenger.repository.RatingRepository;
 import com.example.passenger.validator.ObjectValidatorImp;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class PassengerService {
     private final PassengerMapper passengerMapper;
 
     private final ObjectValidatorImp<PassengerCreateDto> passengerCreateDtoValidator;
+    private final ObjectValidatorImp<PassengerUpdateDto> passengerUpdateDtoValidator;
 
     public PassengerResponseDto createPassenger(PassengerCreateDto passengerCreateDto) {
 
@@ -42,5 +45,21 @@ public class PassengerService {
         passengerRepository.save(savedPassenger);
 
         return passengerMapper.toPassengerResponseDto(savedPassenger);
+    }
+
+    public PassengerResponseDto updatePassenger(PassengerUpdateDto passengerUpdateDto) {
+        passengerUpdateDtoValidator.validate(passengerUpdateDto);
+
+        Passenger updatedPassenger =  passengerMapper.fromPassengerUpdateDto(passengerUpdateDto);
+        Passenger existingPassenger= passengerRepository.findById(updatedPassenger.getId()).isPresent() ?
+                passengerRepository.findById(updatedPassenger.getId()).get() : null;
+        if(existingPassenger == null) {throw new ResourceNotFoundException("Passenger not found");}
+
+        existingPassenger.setEmail(updatedPassenger.getEmail());
+        existingPassenger.setFirstName(updatedPassenger.getFirstName());
+        existingPassenger.setPhoneNumber(updatedPassenger.getPhoneNumber());
+
+        return passengerMapper.toPassengerResponseDto(passengerRepository.save(existingPassenger));
+
     }
 }

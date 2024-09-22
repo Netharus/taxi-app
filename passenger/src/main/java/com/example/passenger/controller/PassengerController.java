@@ -2,6 +2,7 @@ package com.example.passenger.controller;
 
 import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
+import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,12 @@ public class PassengerController {
     @ResponseStatus(HttpStatus.CREATED)
     public PassengerResponseDto createPassenger(@RequestBody PassengerCreateDto passengerCreateDto) {
         return passengerService.createPassenger(passengerCreateDto);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public PassengerResponseDto modifyPassenger(@RequestBody PassengerUpdateDto passengerUpdateDto) {
+        return passengerService.updatePassenger(passengerUpdateDto);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.passenger.handler;
 
 import com.example.passenger.exceptions.RequestNotValidException;
+import com.example.passenger.exceptions.ResourceNotFound;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -22,12 +23,12 @@ public class GlobalExceptionHandler {
                 .body(exception.getErrorMassages());
     }
 
-//    @ExceptionHandler(ResourceNotFound.class)
-//    public ResponseEntity<?> handleException(ResourceNotFound exception) {
-//        Map<String, Object> body = new HashMap<>();
-//        body.put("message", exception.getMessage());
-//        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler(ResourceNotFound.class)
+    public ResponseEntity<?> handleException(ResourceNotFound exception) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", exception.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleException(DataIntegrityViolationException ex) {
