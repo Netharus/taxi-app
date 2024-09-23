@@ -1,7 +1,6 @@
 package com.example.driver.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 public record CarStandaloneCreateDto(
         @NotNull
@@ -10,7 +9,8 @@ public record CarStandaloneCreateDto(
         String brand,
         @NotBlank
         String color,
-        @NotBlank
+        @Pattern(regexp = "^[0-9]{4}[A-Z]{2}[1-7]$",
+                message = "Invalid license plate format. Expected format: 0000AA(1-7)")
         String registrationNumber
 ) {
 }
