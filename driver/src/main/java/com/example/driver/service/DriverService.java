@@ -1,12 +1,10 @@
 package com.example.driver.service;
 
-import com.example.driver.dto.DriverCreateDto;
-import com.example.driver.dto.DriverResponse;
-import com.example.driver.dto.DriverUpdateDto;
-import com.example.driver.dto.RatingCreateDto;
+import com.example.driver.dto.*;
 import com.example.driver.exceptions.RequestNotValidException;
 import com.example.driver.exceptions.ResourceNotFound;
 import com.example.driver.mapper.DriverMapper;
+import com.example.driver.model.Car;
 import com.example.driver.model.Driver;
 import com.example.driver.model.Rating;
 import com.example.driver.model.enums.Role;
@@ -16,9 +14,8 @@ import com.example.driver.validator.ObjectsValidatorImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +30,36 @@ public class DriverService {
 
     private final RatingService ratingService;
 
-    private final ObjectsValidatorImp<DriverCreateDto> driverValidator;
-    private final ObjectsValidatorImp<RatingCreateDto> ratingValidator;
+    private final CarService carService;
 
+    private final ObjectsValidatorImp<DriverCreateDto> driverValidator;
+
+
+
+
+    @Transactional
     public DriverResponse createDriver(DriverCreateDto driverCreateDto) {
 
         driverValidator.validate(driverCreateDto);
         Driver driver = driverMapper.fromDriverRequest(driverCreateDto);
         driver.setRole(Role.USER);
         driver.setRatingList(new ArrayList<>());
+        driver.setCarList(new ArrayList<>());
         Driver savedDriver = driverRepository.save(driver);
+
+        if(driverCreateDto.carCreateDtoList()!=null){
+        driverCreateDto.carCreateDtoList().forEach(carCreateDto -> {
+           savedDriver.getCarList().add(carService.addCar(carCreateDto,savedDriver));
+        });
+        }
+
         Rating rating = Rating.builder().driver(savedDriver).grade(5).build();
         Rating savedRating = ratingService.saveRating(rating);
         savedDriver.getRatingList().add(savedRating);
-        savedDriver.setGrade(Double.valueOf(savedRating.getGrade()));
+        savedDriver.setGrade(5.0);
+
         driverRepository.save(savedDriver);
-        return driverMapper.toDriverResponse(savedDriver);
+        return driverMapper.toDriverResponse(savedDriver,carService.getCarsByDriverId(savedDriver.getId()));
     }
 
     public List<DriverResponse> getAllDrivers() {
@@ -56,11 +67,12 @@ public class DriverService {
         return driverMapper.toDriverResponseList(drivers);
     }
 
-
+    @Transactional
     public void deleteDriver(Long id) throws RequestNotValidException {
         Driver driver = driverRepository.findById(id).isPresent() ? driverRepository.findById(id).get() : null;
         if (driver == null) throw new ResourceNotFound("Driver not found");
         ratingService.deleteByDriver(id);
+        carService.deleteByDriver(id);
         driverRepository.deleteById(id);
     }
 
@@ -78,11 +90,15 @@ public class DriverService {
         savedDriver.setUsername(updateDriver.getUsername());
         savedDriver.setPhoneNumber(updateDriver.getPhoneNumber());
 
-        return driverMapper.toDriverResponse(driverRepository.save(savedDriver));
+        return driverMapper.toDriverResponse(driverRepository.save(savedDriver),carService.getCarsByDriverId(savedDriver.getId()));
     }
 
     public Page<DriverResponse> findAllByPage(Pageable pageable, String keyword) {
-        return driverRepository.findAll(keyword, pageable).map(driverMapper::toDriverResponse);
+        Page<Driver> driversPage = driverRepository.findAll(keyword, pageable);
+        return driversPage.map(driver -> {
+            List<CarResponseDto> carResponseDto = carService.getCarsByDriverId(driver.getId());
+            return driverMapper.toDriverResponse(driver, carResponseDto);
+        });
     }
 
     public Driver findById(Long aLong) {
@@ -92,7 +108,7 @@ public class DriverService {
 
     }
     public void addRating(RatingCreateDto ratingCreateDto) {
-        ratingValidator.validate(ratingCreateDto);
+
         Driver driver=driverRepository.findById(ratingCreateDto.driverId()).isPresent() ? driverRepository.findById(ratingCreateDto.driverId()).get() : null;
         if (driver == null) throw new ResourceNotFound("Driver not found");
 
@@ -104,7 +120,12 @@ public class DriverService {
         Driver driver=driverRepository.findById(driverId).isPresent() ? driverRepository.findById(driverId).get() : null;
         if (driver == null) throw new ResourceNotFound("Driver not found");
 
-        return driverMapper.toDriverResponse(driver);
+        return driverMapper.toDriverResponse(driver, carService.getCarsByDriverId(driverId));
     }
 
+    public CarResponseDto addCar(CarStandaloneCreateDto carCreateDto) {
+        Driver driver=driverRepository.findById(carCreateDto.driverId()).isPresent() ? driverRepository.findById(carCreateDto.driverId()).get() : null;
+        if (driver == null) throw new ResourceNotFound("Driver not found");
+        return carService.addCar(carCreateDto,driver);
+    }
 }

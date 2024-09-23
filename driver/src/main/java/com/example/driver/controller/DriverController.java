@@ -1,12 +1,10 @@
 package com.example.driver.controller;
 
 
-import com.example.driver.dto.DriverCreateDto;
-import com.example.driver.dto.DriverResponse;
-import com.example.driver.dto.DriverUpdateDto;
-import com.example.driver.dto.RatingCreateDto;
+import com.example.driver.dto.*;
 import com.example.driver.model.Rating;
 import com.example.driver.model.enums.SortField;
+import com.example.driver.service.CarService;
 import com.example.driver.service.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -25,6 +23,7 @@ public class DriverController {
 
 
     private final DriverService driverService;
+    private final CarService carService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -77,4 +76,15 @@ public class DriverController {
 //    public ResponseEntity<List<Rating>> getRating(@PathVariable Long driverId) {
 //       return driverService.getTenLastrating(driverId);
 //    }
+
+    @PostMapping("/cars")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CarResponseDto addCar(@RequestBody CarStandaloneCreateDto carCreateDto) {
+        return driverService.addCar(carCreateDto);
+    }
+    @DeleteMapping("/cars/{carId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCar(@PathVariable Long carId) {
+        carService.deleteById(carId);
+    }
 }

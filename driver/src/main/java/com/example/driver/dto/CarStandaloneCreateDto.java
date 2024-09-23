@@ -1,8 +1,11 @@
 package com.example.driver.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-public record CarCreateDto(
+public record CarStandaloneCreateDto(
+        @NotNull
+        Long driverId,
         @NotBlank
         String brand,
         @NotBlank

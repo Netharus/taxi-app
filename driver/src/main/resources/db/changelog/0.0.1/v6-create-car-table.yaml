@@ -44,6 +44,7 @@ databaseChangeLog:
             referencedTableName: driver
             referencedColumnNames: id
             constraintName: fk_car_driver
+            onDelete: CASCADE
       rollback:
         - dropTable:
             tableName: car

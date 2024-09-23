@@ -14,5 +14,6 @@ public interface DriverRepository extends JpaRepository<Driver, Long> {
             + "or d.fullName like %?1%"
             + "or d.phoneNumber like%?1%"
             + "or d.username like %?1%")
-    public Page<Driver> findAll(String keyword, Pageable pageable);
+    Page<Driver> findAll(String keyword, Pageable pageable);
+
 }

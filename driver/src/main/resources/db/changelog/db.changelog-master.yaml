@@ -1,7 +1,7 @@
 databaseChangeLog:
   - include:
       file: db/changelog/0.0.1/v1-accumulative-changelog.yaml
-  - include:
-      file: db/data/v2-add-data-driver-table.yaml
-  - include:
-      file: db/data/v2-add-data-rating-table.yaml
+#  - include:
+#      file: db/data/v2-add-data-driver-table.yaml
+#  - include:
+#      file: db/data/v2-add-data-rating-table.yaml

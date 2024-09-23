@@ -1,5 +1,6 @@
 package com.example.driver.mapper;
 
+import com.example.driver.dto.CarResponseDto;
 import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
@@ -13,8 +14,8 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface DriverMapper {
-
-    DriverResponse toDriverResponse(Driver driver);
+    @Mapping(target = "carResponseDto", source = "carResponseDto")
+    DriverResponse toDriverResponse(Driver driver, List<CarResponseDto> carResponseDto);
 
     List<DriverResponse> toDriverResponseList(List<Driver> drivers);
 

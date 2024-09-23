@@ -23,7 +23,7 @@ public class Car {
     @Column(nullable = false,unique = true,name = "registration_number")
     private String registrationNumber;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
 }

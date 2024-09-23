@@ -1,11 +1,61 @@
 package com.example.driver.service;
 
+import com.example.driver.dto.CarCreateDto;
+import com.example.driver.dto.CarResponseDto;
+import com.example.driver.dto.CarStandaloneCreateDto;
+import com.example.driver.exceptions.ResourceNotFound;
+import com.example.driver.mapper.CarMapper;
+import com.example.driver.model.Car;
+import com.example.driver.model.Driver;
 import com.example.driver.repository.CarRepository;
+import com.example.driver.repository.DriverRepository;
+import com.example.driver.validator.ObjectsValidatorImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CarService {
     private final CarRepository carRepository;
+
+    private final CarMapper carMapper;
+
+    private final ObjectsValidatorImp<CarCreateDto> carCreateDtoValidator;
+    private final ObjectsValidatorImp<CarStandaloneCreateDto> carStandaloneValidator;
+
+
+    @Transactional
+    public Car addCar(CarCreateDto carCreateDto, Driver driver) {
+        carCreateDtoValidator.validate(carCreateDto);
+        Car car = carMapper.fromCarCreateDto(carCreateDto);
+        car.setDriver(driver);
+
+        return car = carRepository.save(car);
+    }
+    @Transactional
+    public CarResponseDto addCar(CarStandaloneCreateDto carCreateDto, Driver driver) {
+        carStandaloneValidator.validate(carCreateDto);
+        Car car = carMapper.fromCarStandaloneDto(carCreateDto);
+        car.setDriver(driver);
+
+        return carMapper.toCarResponseDto(carRepository.save(car));
+    }
+
+    public List<CarResponseDto> getCarsByDriverId(Long driverId) {
+        return carMapper.toCarResponseDtos(carRepository.findByDriverId(driverId));
+    }
+
+    @Transactional
+    public void deleteByDriver(Long driverId) {
+        carRepository.deleteAllByDriverId(driverId);
+    }
+
+    public void deleteById(Long carId) {
+        Car car = carRepository.findById(carId).isPresent()? carRepository.findById(carId).get():null;
+        if(car != null) { throw new ResourceNotFound("Car not found");}
+        carRepository.deleteById(carId);
+    }
 }

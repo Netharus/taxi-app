@@ -5,6 +5,7 @@ import com.example.driver.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,7 @@ public class Driver {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "driver")
-    private List<Rating> ratingList;
+    private List<Rating> ratingList=new ArrayList<>();
 
     @Column( name="grade")
     private Double grade;
@@ -47,6 +48,6 @@ public class Driver {
     @Column(nullable = false, name = "role")
     private Role role = Role.USER;
 
-    @OneToOne(mappedBy = "driver")
-    private Car car;
+    @OneToMany(mappedBy = "driver")
+    private List<Car> carList=new ArrayList<>();
 }
