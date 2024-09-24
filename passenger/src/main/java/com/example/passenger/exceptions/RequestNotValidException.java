@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Data
 @RequiredArgsConstructor
-@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class RequestNotValidException extends RuntimeException {
     private final Set<String> errorMassages;
 
