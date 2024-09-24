@@ -11,8 +11,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/passengers")
@@ -41,24 +51,20 @@ public class PassengerController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePassenger(@PathVariable Long id){
+    public void deletePassenger(@PathVariable Long id) {
         passengerService.deletePassenger(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PassengerResponseDto> findAllByPage(@RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int sizePerPage,
-                                              @RequestParam(defaultValue = "ID") SortField sortField,
-                                              @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
-                                              @RequestParam(defaultValue = "") String keyword) {
-        Pageable pageable = PageRequest.of(page, sizePerPage, sortDirection, sortField.getDatabaseFieldName());
+    public Page<PassengerResponseDto> findAllByPage(@PageableDefault(size = 10, sort = "ID", direction = Sort.Direction.DESC) Pageable pageable,
+                                                    @RequestParam(defaultValue = "") String keyword) {
         return passengerService.findAllByPage(pageable, keyword);
     }
 
     @PostMapping("/rating")
     @ResponseStatus(HttpStatus.CREATED)
-    public PassengerResponseDto addRating(@RequestBody RatingCreateDto ratingCreateDto){
+    public PassengerResponseDto addRating(@RequestBody RatingCreateDto ratingCreateDto) {
         return passengerService.addRating(ratingCreateDto);
     }
 }
