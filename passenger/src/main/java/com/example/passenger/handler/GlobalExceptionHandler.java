@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleException(RequestNotValidException exception) {
         return ResponseEntity
                 .badRequest()
-                .body(exception.getErrorMassages());
+                .body(exception.getErrorMessages());
     }
 
     @ExceptionHandler(ResourceNotFound.class)
