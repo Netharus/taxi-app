@@ -12,6 +12,5 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
 
     void deleteAllByPassengerId(Long id);
 
-
     Page<Rating> findByPassengerId(Pageable pageable, Long byId);
 }

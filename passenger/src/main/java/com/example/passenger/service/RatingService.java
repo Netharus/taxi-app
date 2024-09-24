@@ -17,21 +17,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RatingService {
 
-    private  final RatingRepository ratingRepository;
+    private final RatingRepository ratingRepository;
 
 
-    public Rating saveRating(Rating rating){
+    public Rating saveRating(Rating rating) {
         return ratingRepository.save(rating);
     }
+
     @Transactional
-    public void deleteByPassengerId(Long passengerId){
+    public void deleteByPassengerId(Long passengerId) {
         ratingRepository.deleteAllByPassengerId(passengerId);
     }
 
 
-    public Double addRating(RatingCreateDto ratingCreateDto, 
-                            Passenger passenger){
-        Rating rating= Rating.builder()
+    public Double addRating(RatingCreateDto ratingCreateDto,
+                            Passenger passenger) {
+        Rating rating = Rating.builder()
                 .grade(ratingCreateDto.grade())
                 .passenger(passenger)
                 .driverId(ratingCreateDto.passengerId())
@@ -41,21 +42,22 @@ public class RatingService {
     }
 
     public Page<Rating> getTenLastRating(Long byId) {
-        SortField sortField= SortField.valueOf("ID");
-        Sort.Direction direction= Sort.Direction.DESC;
+        SortField sortField = SortField.valueOf("ID");
+        Sort.Direction direction = Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(
                 0,
                 10,
                 direction,
                 sortField.getDatabaseFieldName());
-        return ratingRepository.findByPassengerId(pageable,byId);
+        return ratingRepository.findByPassengerId(pageable, byId);
     }
-    private Double averageGrade(Page<Rating> ratings){
-        Double average=0.0;
-        for(Rating rating:ratings){
-            average+=rating.getGrade();
+
+    private Double averageGrade(Page<Rating> ratings) {
+        Double average = 0.0;
+        for (Rating rating : ratings) {
+            average += rating.getGrade();
         }
-        average/=ratings.getNumberOfElements();
+        average /= ratings.getNumberOfElements();
         return average;
     }
 }
