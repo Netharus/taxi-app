@@ -1,5 +1,6 @@
-Spring:
-  application.name: passenger
+spring:
+  application:
+    name: passenger
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5434/passenger
@@ -7,7 +8,7 @@ Spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
