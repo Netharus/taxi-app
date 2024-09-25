@@ -9,17 +9,13 @@ import com.example.passenger.exceptions.ResourceNotFound;
 import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
-import com.example.passenger.model.enums.Role;
 import com.example.passenger.repository.PassengerRepository;
-import com.example.passenger.repository.RatingRepository;
-import com.example.passenger.validator.ObjectValidatorImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -33,18 +29,12 @@ public class PassengerService {
 
     private final PassengerMapper passengerMapper;
 
-    private final ObjectValidatorImp<PassengerCreateDto> passengerCreateDtoValidator;
-    private final ObjectValidatorImp<PassengerUpdateDto> passengerUpdateDtoValidator;
-    private final ObjectValidatorImp<RatingCreateDto> ratingCreateDtoValidator;
+
 
     public PassengerResponseDto createPassenger(PassengerCreateDto passengerCreateDto) {
-
-        passengerCreateDtoValidator.validate(passengerCreateDto);
-
         Passenger passenger = passengerMapper.fromPassengerCreateDto(passengerCreateDto);
-        passenger.setRole(Role.USER);
-        passenger.setRatingList(new ArrayList<>());
         Passenger savedPassenger = passengerRepository.save(passenger);
+
         Rating rating = Rating.builder()
                 .passenger(savedPassenger)
                 .grade(FIRST_RATING_GRADE.intValue())
@@ -58,8 +48,6 @@ public class PassengerService {
     }
 
     public PassengerResponseDto updatePassenger(PassengerUpdateDto passengerUpdateDto) {
-        passengerUpdateDtoValidator.validate(passengerUpdateDto);
-
         Passenger updatedPassenger =  passengerMapper.fromPassengerUpdateDto(passengerUpdateDto);
         Passenger existingPassenger= passengerRepository.findById(updatedPassenger.getId())
                 .orElseThrow(() -> new ResourceNotFound("Passenger not found"));
@@ -91,7 +79,6 @@ public class PassengerService {
     }
 
     public PassengerResponseDto addRating(RatingCreateDto ratingCreateDto) {
-        ratingCreateDtoValidator.validate(ratingCreateDto);
         Passenger passenger = passengerRepository.findById(ratingCreateDto.passengerId())
                 .orElseThrow(() -> new ResourceNotFound("Passenger not found"));
         passenger.setGrade(ratingService.addRating(ratingCreateDto, passenger));

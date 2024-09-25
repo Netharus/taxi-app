@@ -6,6 +6,7 @@ import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.dto.RatingCreateDto;
 import com.example.passenger.model.enums.SortField;
 import com.example.passenger.service.PassengerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,13 +34,13 @@ public class PassengerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PassengerResponseDto createPassenger(@RequestBody PassengerCreateDto passengerCreateDto) {
+    public PassengerResponseDto createPassenger(@Valid @RequestBody PassengerCreateDto passengerCreateDto) {
         return passengerService.createPassenger(passengerCreateDto);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public PassengerResponseDto modifyPassenger(@RequestBody PassengerUpdateDto passengerUpdateDto) {
+    public PassengerResponseDto modifyPassenger(@Valid @RequestBody PassengerUpdateDto passengerUpdateDto) {
         return passengerService.updatePassenger(passengerUpdateDto);
     }
 
@@ -64,7 +65,7 @@ public class PassengerController {
 
     @PostMapping("/rating")
     @ResponseStatus(HttpStatus.CREATED)
-    public PassengerResponseDto addRating(@RequestBody RatingCreateDto ratingCreateDto) {
+    public PassengerResponseDto addRating(@Valid @RequestBody RatingCreateDto ratingCreateDto) {
         return passengerService.addRating(ratingCreateDto);
     }
 }
