@@ -30,7 +30,7 @@ public class PassengerService {
     private final PassengerMapper passengerMapper;
 
 
-
+    @Transactional
     public PassengerResponseDto createPassenger(PassengerCreateDto passengerCreateDto) {
         Passenger passenger = passengerMapper.fromPassengerCreateDto(passengerCreateDto);
         Passenger savedPassenger = passengerRepository.save(passenger);
@@ -47,6 +47,7 @@ public class PassengerService {
         return passengerMapper.toPassengerResponseDto(savedPassenger);
     }
 
+    @Transactional
     public PassengerResponseDto updatePassenger(PassengerUpdateDto passengerUpdateDto) {
         Passenger updatedPassenger =  passengerMapper.fromPassengerUpdateDto(passengerUpdateDto);
         Passenger existingPassenger= passengerRepository.findById(updatedPassenger.getId())
@@ -60,6 +61,7 @@ public class PassengerService {
 
     }
 
+    @Transactional(readOnly = true)
     public PassengerResponseDto findById(Long id) {
         Passenger passenger = passengerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Passenger not found"));
@@ -74,10 +76,12 @@ public class PassengerService {
         passengerRepository.delete(passenger);
     }
 
+    @Transactional(readOnly = true)
     public Page<PassengerResponseDto> findAllByPage(Pageable pageable, String keyword) {
         return passengerRepository.findAllByPage(keyword,pageable).map(passengerMapper::toPassengerResponseDto);
     }
 
+    @Transactional
     public PassengerResponseDto addRating(RatingCreateDto ratingCreateDto) {
         Passenger passenger = passengerRepository.findById(ratingCreateDto.passengerId())
                 .orElseThrow(() -> new ResourceNotFound("Passenger not found"));

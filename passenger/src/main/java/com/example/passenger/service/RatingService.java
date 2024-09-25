@@ -19,7 +19,7 @@ public class RatingService {
 
     private final RatingRepository ratingRepository;
 
-
+    @Transactional
     public Rating saveRating(Rating rating) {
         return ratingRepository.save(rating);
     }
@@ -29,7 +29,7 @@ public class RatingService {
         ratingRepository.deleteAllByPassengerId(passengerId);
     }
 
-
+    @Transactional
     public Double addRating(RatingCreateDto ratingCreateDto,
                             Passenger passenger) {
         Rating rating = Rating.builder()
@@ -41,6 +41,7 @@ public class RatingService {
         return averageGrade(getTenLastRating(passenger.getId()));
     }
 
+    @Transactional(readOnly = true)
     public Page<Rating> getTenLastRating(Long byId) {
         SortField sortField = SortField.valueOf("ID");
         Sort.Direction direction = Sort.Direction.DESC;
