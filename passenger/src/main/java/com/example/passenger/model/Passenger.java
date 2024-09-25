@@ -41,6 +41,7 @@ public class Passenger {
     @Column(nullable = false,unique = true,name = "phone_number")
     private String phoneNumber;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "role")
     private Role role = Role.USER;
@@ -48,6 +49,7 @@ public class Passenger {
     @Column( name="grade")
     private Double grade;
 
+    @Builder.Default
     @OneToMany(mappedBy = "passenger")
     private List<Rating> ratingList = new ArrayList<>();
 }
