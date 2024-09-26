@@ -36,10 +36,10 @@ public class PassengerController {
         return passengerService.createPassenger(passengerCreateDto);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PassengerResponseDto modifyPassenger(@Valid @RequestBody PassengerUpdateDto passengerUpdateDto) {
-        return passengerService.updatePassenger(passengerUpdateDto);
+    public PassengerResponseDto modifyPassenger(@Valid @RequestBody PassengerUpdateDto passengerUpdateDto, @PathVariable Long id) {
+        return passengerService.updatePassenger(passengerUpdateDto,id);
     }
 
     @GetMapping("/{id}")

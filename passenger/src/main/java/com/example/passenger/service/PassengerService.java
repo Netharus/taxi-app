@@ -49,9 +49,9 @@ public class PassengerService {
     }
 
     @Transactional
-    public PassengerResponseDto updatePassenger(PassengerUpdateDto passengerUpdateDto) {
+    public PassengerResponseDto updatePassenger(PassengerUpdateDto passengerUpdateDto,Long id) {
         Passenger updatedPassenger =  passengerMapper.fromPassengerUpdateDto(passengerUpdateDto);
-        Passenger existingPassenger= passengerRepository.findById(updatedPassenger.getId())
+        Passenger existingPassenger= passengerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Passenger not found"));
 
         existingPassenger.setEmail(updatedPassenger.getEmail());

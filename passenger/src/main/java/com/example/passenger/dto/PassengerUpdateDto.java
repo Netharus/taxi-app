@@ -2,12 +2,9 @@ package com.example.passenger.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record PassengerUpdateDto(
-        @NotNull
-        Long id,
         @NotBlank
         String firstName,
         @Email
