@@ -46,6 +46,7 @@ public class Driver {
     @Column(nullable = false, unique = true, name = "phone_number")
     private String phoneNumber;
 
+    @Builder.Default
     @OneToMany(mappedBy = "driver")
     private List<Rating> ratingList=new ArrayList<>();
 
@@ -56,10 +57,12 @@ public class Driver {
     @Column(nullable = false, name= "gender")
     private Gender gender;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "role")
     private Role role = Role.USER;
 
+    @Builder.Default
     @OneToMany(mappedBy = "driver")
     private List<Car> carList=new ArrayList<>();
 }
