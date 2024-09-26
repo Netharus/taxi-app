@@ -23,13 +23,10 @@ public class CarService {
 
     private final CarMapper carMapper;
 
-    private final ObjectsValidatorImp<CarCreateDto> carCreateDtoValidator;
-    private final ObjectsValidatorImp<CarStandaloneCreateDto> carStandaloneValidator;
 
 
     @Transactional
     public Car addCar(CarCreateDto carCreateDto, Driver driver) {
-        carCreateDtoValidator.validate(carCreateDto);
         Car car = carMapper.fromCarCreateDto(carCreateDto);
         car.setDriver(driver);
 
@@ -37,7 +34,6 @@ public class CarService {
     }
     @Transactional
     public CarResponseDto addCar(CarStandaloneCreateDto carCreateDto, Driver driver) {
-        carStandaloneValidator.validate(carCreateDto);
         Car car = carMapper.fromCarStandaloneDto(carCreateDto);
         car.setDriver(driver);
 

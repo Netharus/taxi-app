@@ -32,7 +32,7 @@ public class DriverService {
 
     private final CarService carService;
 
-    private final ObjectsValidatorImp<DriverCreateDto> driverValidator;
+
 
 
 
@@ -40,7 +40,6 @@ public class DriverService {
     @Transactional
     public DriverResponse createDriver(DriverCreateDto driverCreateDto) {
 
-        driverValidator.validate(driverCreateDto);
         Driver driver = driverMapper.fromDriverRequest(driverCreateDto);
         driver.setRole(Role.USER);
         driver.setRatingList(new ArrayList<>());

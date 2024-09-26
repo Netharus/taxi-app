@@ -26,7 +26,6 @@ public class RatingService {
 
     private final RatingMapper ratingMapper;
 
-    private final ObjectsValidatorImp<RatingCreateDto> ratingValidator;
 
     public Rating saveRating(Rating rating){
         return ratingRepository.save(rating);
@@ -44,7 +43,6 @@ public class RatingService {
     }
 
     public Double addRating(RatingCreateDto ratingCreateDto,Driver driver){
-        ratingValidator.validate(ratingCreateDto);
         Rating rating= Rating.builder()
                 .grade(ratingCreateDto.grade())
                 .driver(driver)
