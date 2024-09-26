@@ -1,20 +1,32 @@
 package com.example.driver.controller;
 
-
-import com.example.driver.dto.*;
-import com.example.driver.model.Rating;
-import com.example.driver.model.enums.SortField;
+import com.example.driver.dto.CarResponseDto;
+import com.example.driver.dto.CarStandaloneCreateDto;
+import com.example.driver.dto.DriverCreateDto;
+import com.example.driver.dto.DriverResponse;
+import com.example.driver.dto.DriverUpdateDto;
+import com.example.driver.dto.RatingCreateDto;
 import com.example.driver.service.CarService;
 import com.example.driver.service.DriverService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -27,25 +39,21 @@ public class DriverController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DriverResponse createDriver(@RequestBody DriverCreateDto driverCreateDto) {
+    public DriverResponse createDriver(@Valid @RequestBody DriverCreateDto driverCreateDto) {
         return driverService.createDriver(driverCreateDto);
     }
 
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public DriverResponse updateDriver(@RequestBody DriverUpdateDto driverUpdateDto) {
+    public DriverResponse updateDriver(@Valid @RequestBody DriverUpdateDto driverUpdateDto) {
         return driverService.updateDriver(driverUpdateDto);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<DriverResponse> findAllByPage(@RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int sizePerPage,
-                                              @RequestParam(defaultValue = "ID") SortField sortField,
-                                              @RequestParam(defaultValue = "DESC") Sort.Direction sortDirection,
+    public Page<DriverResponse> findAllByPage(@PageableDefault(page = 0, size = 10,sort = "ID",direction = Sort.Direction.DESC) Pageable pageable,
                                               @RequestParam(defaultValue = "") String keyword) {
-        Pageable pageable = PageRequest.of(page, sizePerPage, sortDirection, sortField.getDatabaseFieldName());
         return driverService.findAllByPage(pageable, keyword);
     }
 
@@ -57,7 +65,7 @@ public class DriverController {
 
     @PostMapping("/rating")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addRating(@RequestBody RatingCreateDto  ratingCreateDto) {
+    public void addRating(@Valid @RequestBody RatingCreateDto ratingCreateDto) {
     driverService.addRating(ratingCreateDto);
     }
 
@@ -79,7 +87,7 @@ public class DriverController {
 
     @PostMapping("/cars")
     @ResponseStatus(HttpStatus.CREATED)
-    public CarResponseDto addCar(@RequestBody CarStandaloneCreateDto carCreateDto) {
+    public CarResponseDto addCar(@Valid @RequestBody CarStandaloneCreateDto carCreateDto) {
         return driverService.addCar(carCreateDto);
     }
     @DeleteMapping("/cars/{carId}")
