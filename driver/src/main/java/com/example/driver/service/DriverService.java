@@ -13,7 +13,6 @@ import com.example.driver.exceptions.ResourceNotFound;
 import com.example.driver.mapper.DriverMapper;
 import com.example.driver.model.Driver;
 import com.example.driver.model.Rating;
-import com.example.driver.model.enums.Role;
 import com.example.driver.repository.DriverRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,12 +20,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class DriverService {
+
+    private final static Double STARTING_GRADE=5.;
 
     private final DriverRepository driverRepository;
 
@@ -40,9 +40,6 @@ public class DriverService {
     public DriverResponse createDriver(DriverCreateDto driverCreateDto) {
 
         Driver driver = driverMapper.fromDriverRequest(driverCreateDto);
-        driver.setRole(Role.USER);
-        driver.setRatingList(new ArrayList<>());
-        driver.setCarList(new ArrayList<>());
         Driver savedDriver = driverRepository.save(driver);
 
         if (driverCreateDto.carCreateDtoList() != null) {
@@ -51,10 +48,10 @@ public class DriverService {
             });
         }
 
-        Rating rating = Rating.builder().driver(savedDriver).grade(5).build();
+        Rating rating = Rating.builder().driver(savedDriver).grade(STARTING_GRADE.intValue()).build();
         Rating savedRating = ratingService.saveRating(rating);
         savedDriver.getRatingList().add(savedRating);
-        savedDriver.setGrade(5.0);
+        savedDriver.setGrade(STARTING_GRADE);
 
         driverRepository.save(savedDriver);
         return driverMapper.toDriverResponse(savedDriver, carService.getCarsByDriverId(savedDriver.getId()));
