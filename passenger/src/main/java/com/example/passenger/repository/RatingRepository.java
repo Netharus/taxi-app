@@ -1,6 +1,5 @@
 package com.example.passenger.repository;
 
-import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
