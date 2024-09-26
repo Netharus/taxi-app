@@ -1,14 +1,15 @@
 package com.example.driver.mapper;
 
 import com.example.driver.dto.CarResponseDto;
+import com.example.driver.dto.ContainerDriverResponse;
 import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.model.Driver;
-import com.example.driver.model.Rating;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -23,4 +24,7 @@ public interface DriverMapper {
 
     @Mapping(target = "id", source = "id")
     Driver fromDriverUpdate(DriverUpdateDto driverUpdateDto);
+
+    @Mapping(target = "pageNum", source = "number")
+    ContainerDriverResponse toContainerDriverResponse(Page<DriverResponse> driverResponses);
 }

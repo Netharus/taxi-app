@@ -15,7 +15,6 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
     @Query("SELECT avg (r.grade) from Rating r where r.driver.id=?1")
     double averageGradeByDriverId(Long driverId);
 
-
     List<Rating> findLast10ByDriverId(Long driverId);
 
     Page<Rating> findByDriverId(Pageable pageable1, Long byId);

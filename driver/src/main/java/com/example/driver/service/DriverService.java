@@ -1,16 +1,19 @@
 package com.example.driver.service;
 
-import com.example.driver.dto.*;
+
+import com.example.driver.dto.CarResponseDto;
+import com.example.driver.dto.CarStandaloneCreateDto;
+import com.example.driver.dto.DriverCreateDto;
+import com.example.driver.dto.DriverResponse;
+import com.example.driver.dto.DriverUpdateDto;
+import com.example.driver.dto.RatingCreateDto;
 import com.example.driver.exceptions.RequestNotValidException;
 import com.example.driver.exceptions.ResourceNotFound;
 import com.example.driver.mapper.DriverMapper;
-import com.example.driver.model.Car;
 import com.example.driver.model.Driver;
 import com.example.driver.model.Rating;
 import com.example.driver.model.enums.Role;
 import com.example.driver.repository.DriverRepository;
-
-import com.example.driver.validator.ObjectsValidatorImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,11 +35,6 @@ public class DriverService {
 
     private final CarService carService;
 
-
-
-
-
-
     @Transactional
     public DriverResponse createDriver(DriverCreateDto driverCreateDto) {
 
@@ -46,10 +44,10 @@ public class DriverService {
         driver.setCarList(new ArrayList<>());
         Driver savedDriver = driverRepository.save(driver);
 
-        if(driverCreateDto.carCreateDtoList()!=null){
-        driverCreateDto.carCreateDtoList().forEach(carCreateDto -> {
-           savedDriver.getCarList().add(carService.addCar(carCreateDto,savedDriver));
-        });
+        if (driverCreateDto.carCreateDtoList() != null) {
+            driverCreateDto.carCreateDtoList().forEach(carCreateDto -> {
+                savedDriver.getCarList().add(carService.addCar(carCreateDto, savedDriver));
+            });
         }
 
         Rating rating = Rating.builder().driver(savedDriver).grade(5).build();
@@ -58,7 +56,7 @@ public class DriverService {
         savedDriver.setGrade(5.0);
 
         driverRepository.save(savedDriver);
-        return driverMapper.toDriverResponse(savedDriver,carService.getCarsByDriverId(savedDriver.getId()));
+        return driverMapper.toDriverResponse(savedDriver, carService.getCarsByDriverId(savedDriver.getId()));
     }
 
     public List<DriverResponse> getAllDrivers() {
@@ -89,7 +87,7 @@ public class DriverService {
         savedDriver.setUsername(updateDriver.getUsername());
         savedDriver.setPhoneNumber(updateDriver.getPhoneNumber());
 
-        return driverMapper.toDriverResponse(driverRepository.save(savedDriver),carService.getCarsByDriverId(savedDriver.getId()));
+        return driverMapper.toDriverResponse(driverRepository.save(savedDriver), carService.getCarsByDriverId(savedDriver.getId()));
     }
 
     public Page<DriverResponse> findAllByPage(Pageable pageable, String keyword) {
@@ -101,14 +99,15 @@ public class DriverService {
     }
 
     public Driver findById(Long aLong) {
-        Driver driver=driverRepository.findById(aLong).isPresent() ? driverRepository.findById(aLong).get() : null;
+        Driver driver = driverRepository.findById(aLong).isPresent() ? driverRepository.findById(aLong).get() : null;
         if (driver == null) throw new ResourceNotFound("Driver not found");
         return driver;
 
     }
+
     public void addRating(RatingCreateDto ratingCreateDto) {
 
-        Driver driver=driverRepository.findById(ratingCreateDto.driverId()).isPresent() ? driverRepository.findById(ratingCreateDto.driverId()).get() : null;
+        Driver driver = driverRepository.findById(ratingCreateDto.driverId()).isPresent() ? driverRepository.findById(ratingCreateDto.driverId()).get() : null;
         if (driver == null) throw new ResourceNotFound("Driver not found");
 
         driver.setGrade(ratingService.addRating(ratingCreateDto, driver));
@@ -116,15 +115,15 @@ public class DriverService {
     }
 
     public DriverResponse getDriverById(Long driverId) {
-        Driver driver=driverRepository.findById(driverId).isPresent() ? driverRepository.findById(driverId).get() : null;
+        Driver driver = driverRepository.findById(driverId).isPresent() ? driverRepository.findById(driverId).get() : null;
         if (driver == null) throw new ResourceNotFound("Driver not found");
 
         return driverMapper.toDriverResponse(driver, carService.getCarsByDriverId(driverId));
     }
 
     public CarResponseDto addCar(CarStandaloneCreateDto carCreateDto) {
-        Driver driver=driverRepository.findById(carCreateDto.driverId()).isPresent() ? driverRepository.findById(carCreateDto.driverId()).get() : null;
+        Driver driver = driverRepository.findById(carCreateDto.driverId()).isPresent() ? driverRepository.findById(carCreateDto.driverId()).get() : null;
         if (driver == null) throw new ResourceNotFound("Driver not found");
-        return carService.addCar(carCreateDto,driver);
+        return carService.addCar(carCreateDto, driver);
     }
 }

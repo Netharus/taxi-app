@@ -1,6 +1,5 @@
 package com.example.driver.dto;
 
-import com.example.driver.model.Rating;
 import com.example.driver.model.enums.Gender;
 
 import java.util.List;

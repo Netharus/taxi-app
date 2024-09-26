@@ -2,6 +2,7 @@ package com.example.driver.controller;
 
 import com.example.driver.dto.CarResponseDto;
 import com.example.driver.dto.CarStandaloneCreateDto;
+import com.example.driver.dto.ContainerDriverResponse;
 import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
@@ -10,7 +11,6 @@ import com.example.driver.service.CarService;
 import com.example.driver.service.DriverService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -52,8 +52,8 @@ public class DriverController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<DriverResponse> findAllByPage(@PageableDefault(page = 0, size = 10,sort = "ID",direction = Sort.Direction.DESC) Pageable pageable,
-                                              @RequestParam(defaultValue = "") String keyword) {
+    public ContainerDriverResponse findAllByPage(@PageableDefault(page = 0, size = 10,sort = "ID",direction = Sort.Direction.DESC) Pageable pageable,
+                                                 @RequestParam(defaultValue = "") String keyword) {
         return driverService.findAllByPage(pageable, keyword);
     }
 

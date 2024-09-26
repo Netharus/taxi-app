@@ -8,8 +8,6 @@ import com.example.driver.mapper.CarMapper;
 import com.example.driver.model.Car;
 import com.example.driver.model.Driver;
 import com.example.driver.repository.CarRepository;
-import com.example.driver.repository.DriverRepository;
-import com.example.driver.validator.ObjectsValidatorImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +22,6 @@ public class CarService {
     private final CarMapper carMapper;
 
 
-
     @Transactional
     public Car addCar(CarCreateDto carCreateDto, Driver driver) {
         Car car = carMapper.fromCarCreateDto(carCreateDto);
@@ -32,6 +29,7 @@ public class CarService {
 
         return car = carRepository.save(car);
     }
+
     @Transactional
     public CarResponseDto addCar(CarStandaloneCreateDto carCreateDto, Driver driver) {
         Car car = carMapper.fromCarStandaloneDto(carCreateDto);
@@ -50,8 +48,10 @@ public class CarService {
     }
 
     public void deleteById(Long carId) {
-        Car car = carRepository.findById(carId).isPresent()? carRepository.findById(carId).get():null;
-        if(car != null) { throw new ResourceNotFound("Car not found");}
+        Car car = carRepository.findById(carId).isPresent() ? carRepository.findById(carId).get() : null;
+        if (car != null) {
+            throw new ResourceNotFound("Car not found");
+        }
         carRepository.deleteById(carId);
     }
 }
