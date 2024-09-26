@@ -1,9 +1,6 @@
 package com.example.passenger.controller;
 
-import com.example.passenger.dto.PassengerCreateDto;
-import com.example.passenger.dto.PassengerResponseDto;
-import com.example.passenger.dto.PassengerUpdateDto;
-import com.example.passenger.dto.RatingCreateDto;
+import com.example.passenger.dto.*;
 import com.example.passenger.model.enums.SortField;
 import com.example.passenger.service.PassengerService;
 import jakarta.validation.Valid;
@@ -58,8 +55,8 @@ public class PassengerController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<PassengerResponseDto> findAllByPage(@PageableDefault(size = 10, sort = "ID", direction = Sort.Direction.DESC) Pageable pageable,
-                                                    @RequestParam(defaultValue = "") String keyword) {
+    public ContainerResponseDto findAllByPage(@PageableDefault(size = 10, sort = "ID", direction = Sort.Direction.DESC) Pageable pageable,
+                                              @RequestParam(defaultValue = "") String keyword) {
         return passengerService.findAllByPage(pageable, keyword);
     }
 

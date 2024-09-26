@@ -39,13 +39,13 @@ public class GlobalExceptionHandler {
         body.put("message", message);
         return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleException(Exception exception){
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", "Internal Server Error");
-        return new ResponseEntity<>(body,
-                HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleException(Exception exception){
+//        Map<String, Object> body = new HashMap<>();
+//        body.put("message", "Internal Server Error");
+//        return new ResponseEntity<>(body,
+//                HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleValidationException(HttpMessageNotReadableException exception) {
         String errorDetails = "";
