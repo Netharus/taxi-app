@@ -20,6 +20,11 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final static String MESSAGE="message";
+
+    private final static String ERROR_DETAILS_MESSAGE="Invalid enum value: '%s' for the field: '%s'. The value must be one of: %s.";
+
     @ExceptionHandler(RequestNotValidException.class)
     public ResponseEntity<?> handleException(RequestNotValidException exception) {
         return ResponseEntity
@@ -30,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFound.class)
     public ResponseEntity<?> handleException(ResourceNotFound exception) {
         Map<String, Object> body = new HashMap<>();
-        body.put("message", exception.getMessage());
+        body.put(MESSAGE, exception.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
@@ -38,13 +43,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleException(DataIntegrityViolationException ex) {
         Map<String, Object> body = new HashMap<>();
         String message = "Duplicate key error: " + ex.getMostSpecificCause().getMessage();
-        body.put("message", message);
+        body.put(MESSAGE, message);
         return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception exception){
         Map<String, Object> body = new HashMap<>();
-        body.put("message", "Internal Server Error");
+        body.put(MESSAGE, "Internal Server Error");
         return new ResponseEntity<>(body,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -55,12 +60,18 @@ public class GlobalExceptionHandler {
         if (exception.getCause() instanceof InvalidFormatException) {
             InvalidFormatException ifx = (InvalidFormatException) exception.getCause();
             if (ifx.getTargetType()!=null && ifx.getTargetType().isEnum()) {
-                errorDetails = String.format("Invalid enum value: '%s' for the field: '%s'. The value must be one of: %s.",
-                        ifx.getValue(), ifx.getPath().get(ifx.getPath().size()-1).getFieldName(), Arrays.toString(ifx.getTargetType().getEnumConstants()));
+                errorDetails = String.format(ERROR_DETAILS_MESSAGE,
+                        ifx.getValue(), ifx.getPath().get(ifx
+                                .getPath()
+                                .size()-1)
+                                .getFieldName(),
+                        Arrays.toString(ifx
+                                        .getTargetType()
+                                        .getEnumConstants()));
             }
         }
         Map<String, Object> body = new HashMap<>();
-        body.put("message", errorDetails);
+        body.put(MESSAGE, errorDetails);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
