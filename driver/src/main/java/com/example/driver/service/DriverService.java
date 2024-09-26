@@ -3,6 +3,7 @@ package com.example.driver.service;
 
 import com.example.driver.dto.CarResponseDto;
 import com.example.driver.dto.CarStandaloneCreateDto;
+import com.example.driver.dto.ContainerDriverResponse;
 import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
@@ -90,12 +91,12 @@ public class DriverService {
         return driverMapper.toDriverResponse(driverRepository.save(savedDriver), carService.getCarsByDriverId(savedDriver.getId()));
     }
 
-    public Page<DriverResponse> findAllByPage(Pageable pageable, String keyword) {
+    public ContainerDriverResponse findAllByPage(Pageable pageable, String keyword) {
         Page<Driver> driversPage = driverRepository.findAll(keyword, pageable);
-        return driversPage.map(driver -> {
+        return driverMapper.toContainerDriverResponse(driversPage.map(driver -> {
             List<CarResponseDto> carResponseDto = carService.getCarsByDriverId(driver.getId());
             return driverMapper.toDriverResponse(driver, carResponseDto);
-        });
+        }));
     }
 
     public Driver findById(Long aLong) {
