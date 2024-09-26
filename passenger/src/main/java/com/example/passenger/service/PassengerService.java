@@ -1,7 +1,11 @@
 package com.example.passenger.service;
 
 
-import com.example.passenger.dto.*;
+import com.example.passenger.dto.ContainerPassengerResponseDto;
+import com.example.passenger.dto.PassengerCreateDto;
+import com.example.passenger.dto.PassengerResponseDto;
+import com.example.passenger.dto.PassengerUpdateDto;
+import com.example.passenger.dto.RatingCreateDto;
 import com.example.passenger.exceptions.ResourceNotFound;
 import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
@@ -74,7 +78,7 @@ public class PassengerService {
     }
 
     @Transactional(readOnly = true)
-    public ContainerResponseDto findAllByPage(Pageable pageable, String keyword) {
+    public ContainerPassengerResponseDto findAllByPage(Pageable pageable, String keyword) {
         Page<PassengerResponseDto> page= passengerRepository
                 .findAllByPage(keyword,pageable)
                 .map(passengerMapper::toPassengerResponseDto);
