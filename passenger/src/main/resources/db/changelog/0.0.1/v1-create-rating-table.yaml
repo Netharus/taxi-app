@@ -41,5 +41,8 @@ databaseChangeLog:
             constraintName: fk_rating_passenger
 
       rollback:
+        - dropForeignKeyConstraint:
+            baseTableName: rating
+            constraintName: fk_rating_passenger
         - dropTable:
             tableName: rating

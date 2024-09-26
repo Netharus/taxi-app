@@ -45,3 +45,6 @@ databaseChangeLog:
                   type: DOUBLE
                   constraints:
                     nullable: true
+      rollback:
+        - dropTable:
+            tableName: passenger
