@@ -22,7 +22,6 @@ public interface DriverMapper {
 
     Driver fromDriverRequest(DriverCreateDto driverCreateDto);
 
-    @Mapping(target = "id", source = "id")
     Driver fromDriverUpdate(DriverUpdateDto driverUpdateDto);
 
     @Mapping(target = "pageNum", source = "number")
