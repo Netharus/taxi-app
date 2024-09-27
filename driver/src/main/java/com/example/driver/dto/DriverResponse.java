@@ -12,5 +12,6 @@ public record DriverResponse(
         String fullName,
         String phoneNumber,
         Gender gender,
-        List<CarResponseDto> carResponseDto) {
+        List<CarResponseDto> carResponseDto
+) {
 }

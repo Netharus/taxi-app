@@ -21,7 +21,6 @@ public class CarService {
 
     private final CarMapper carMapper;
 
-
     @Transactional
     public Car addCar(CarCreateDto carCreateDto, Driver driver) {
         Car car = carMapper.fromCarCreateDto(carCreateDto);
@@ -38,6 +37,7 @@ public class CarService {
         return carMapper.toCarResponseDto(carRepository.save(car));
     }
 
+    @Transactional(readOnly = true)
     public List<CarResponseDto> getCarsByDriverId(Long driverId) {
         return carMapper.toCarResponseDtos(carRepository.findByDriverId(driverId));
     }
@@ -48,7 +48,8 @@ public class CarService {
     }
 
     public void deleteById(Long carId) {
-        carRepository.findById(carId).orElseThrow(()-> new ResourceNotFound("Car not found"));
+        carRepository.findById(carId)
+                .orElseThrow(()-> new ResourceNotFound("Car not found"));
         carRepository.deleteById(carId);
     }
 }

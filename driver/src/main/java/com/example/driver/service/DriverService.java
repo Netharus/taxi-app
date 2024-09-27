@@ -47,7 +47,10 @@ public class DriverService {
             });
         }
 
-        Rating rating = Rating.builder().driver(savedDriver).grade(STARTING_GRADE.intValue()).build();
+        Rating rating = Rating.builder()
+                .driver(savedDriver)
+                .grade(STARTING_GRADE.intValue())
+                .build();
         Rating savedRating = ratingService.saveRating(rating);
         savedDriver.getRatingList().add(savedRating);
         savedDriver.setGrade(STARTING_GRADE);
@@ -56,6 +59,7 @@ public class DriverService {
         return driverMapper.toDriverResponse(savedDriver, carService.getCarsByDriverId(savedDriver.getId()));
     }
 
+    @Transactional(readOnly = true)
     public List<DriverResponse> getAllDrivers() {
         List<Driver> drivers = driverRepository.findAll();
         return driverMapper.toDriverResponseList(drivers);
@@ -63,17 +67,18 @@ public class DriverService {
 
     @Transactional
     public void deleteDriver(Long id) {
-        driverRepository.findById(id).orElseThrow(()-> new ResourceNotFound("Driver not found"));
+        driverRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFound("Driver not found"));
         ratingService.deleteByDriver(id);
         carService.deleteByDriver(id);
         driverRepository.deleteById(id);
     }
 
+    @Transactional
     public DriverResponse updateDriver(DriverUpdateDto driverUpdateDto, Long driverId) {
 
         Driver updateDriver = driverMapper.fromDriverUpdate(driverUpdateDto);
-        Driver savedDriver = driverRepository
-                .findById(driverId)
+        Driver savedDriver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new ResourceNotFound("Driver not found"));
 
         savedDriver.setGender(updateDriver.getGender());
@@ -86,6 +91,7 @@ public class DriverService {
                 carService.getCarsByDriverId(savedDriver.getId()));
     }
 
+    @Transactional(readOnly = true)
     public ContainerDriverResponse findAllByPage(Pageable pageable, String keyword) {
         Page<Driver> driversPage = driverRepository.findAll(keyword, pageable);
         return driverMapper.toContainerDriverResponse(driversPage.map(driver -> {
@@ -94,11 +100,13 @@ public class DriverService {
         }));
     }
 
+    @Transactional(readOnly = true)
     public Driver findById(Long aLong) {
         return driverRepository.findById(aLong).orElseThrow(() -> new ResourceNotFound("Driver not found"));
 
     }
 
+    @Transactional
     public void addRating(RatingCreateDto ratingCreateDto) {
 
         Driver driver = driverRepository.findById(ratingCreateDto.driverId())
@@ -108,14 +116,17 @@ public class DriverService {
         driverRepository.save(driver);
     }
 
+    @Transactional(readOnly = true)
     public DriverResponse getDriverById(Long driverId) {
         Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new ResourceNotFound("Driver not found"));
 
         return driverMapper.toDriverResponse(driver, carService.getCarsByDriverId(driverId));
     }
 
+    @Transactional
     public CarResponseDto addCar(CarStandaloneCreateDto carCreateDto) {
-        Driver driver = driverRepository.findById(carCreateDto.driverId()).orElseThrow(() -> new ResourceNotFound("Driver not found"));
+        Driver driver = driverRepository.findById(carCreateDto.driverId())
+                .orElseThrow(() -> new ResourceNotFound("Driver not found"));
         return carService.addCar(carCreateDto, driver);
     }
 }

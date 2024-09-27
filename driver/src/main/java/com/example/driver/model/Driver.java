@@ -16,7 +16,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +37,6 @@ public class Driver {
     @Column(length = 50, nullable = false, unique = true, name = "email")
     private String email;
 
-    //TODO separate field
-    //TODO probably I can separate only name, and save fullName field
     @Column(nullable = false, name = "full_name")
     private String fullName;
 

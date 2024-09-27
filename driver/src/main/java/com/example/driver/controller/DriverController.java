@@ -27,14 +27,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/drivers")
 public class DriverController {
 
-
     private final DriverService driverService;
+
     private final CarService carService;
 
     @PostMapping
@@ -43,16 +42,15 @@ public class DriverController {
         return driverService.createDriver(driverCreateDto);
     }
 
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public DriverResponse updateDriver(@Valid @RequestBody DriverUpdateDto driverUpdateDto, @PathVariable Long driverId) {
-        return driverService.updateDriver(driverUpdateDto,driverId);
+        return driverService.updateDriver(driverUpdateDto, driverId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ContainerDriverResponse findAllByPage(@PageableDefault(page = 0, size = 10,sort = "ID",direction = Sort.Direction.DESC) Pageable pageable,
+    public ContainerDriverResponse findAllByPage(@PageableDefault(page = 0, size = 10, sort = "ID", direction = Sort.Direction.DESC) Pageable pageable,
                                                  @RequestParam(defaultValue = "") String keyword) {
         return driverService.findAllByPage(pageable, keyword);
     }
@@ -66,7 +64,7 @@ public class DriverController {
     @PostMapping("/rating")
     @ResponseStatus(HttpStatus.CREATED)
     public void addRating(@Valid @RequestBody RatingCreateDto ratingCreateDto) {
-    driverService.addRating(ratingCreateDto);
+        driverService.addRating(ratingCreateDto);
     }
 
     @GetMapping("/{driverId}")
@@ -80,6 +78,7 @@ public class DriverController {
     public CarResponseDto addCar(@Valid @RequestBody CarStandaloneCreateDto carCreateDto) {
         return driverService.addCar(carCreateDto);
     }
+
     @DeleteMapping("/cars/{carId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable Long carId) {

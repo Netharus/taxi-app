@@ -1,5 +1,6 @@
-Spring:
-  application.name: driver
+spring:
+  application:
+    name: driver
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/driver
@@ -7,7 +8,7 @@ Spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:

@@ -15,6 +15,7 @@ public interface CarMapper {
     Car fromCarCreateDto(CarCreateDto carCreateDto);
 
     CarResponseDto toCarResponseDto(Car car);
+
     List<CarResponseDto> toCarResponseDtos(List<Car> cars);
 
     Car fromCarStandaloneDto(CarStandaloneCreateDto carStandaloneCreateDto);

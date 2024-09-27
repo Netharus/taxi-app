@@ -21,6 +21,6 @@ public record DriverCreateDto(
         String phoneNumber,
         @NotNull @NotEmpty
         String gender,
-
-        List<CarCreateDto> carCreateDtoList) {
+        List<CarCreateDto> carCreateDtoList
+) {
 }
