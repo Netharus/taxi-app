@@ -8,7 +8,6 @@ import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.dto.RatingCreateDto;
-import com.example.driver.exceptions.RequestNotValidException;
 import com.example.driver.exceptions.ResourceNotFound;
 import com.example.driver.mapper.DriverMapper;
 import com.example.driver.model.Driver;
@@ -63,7 +62,7 @@ public class DriverService {
     }
 
     @Transactional
-    public void deleteDriver(Long id) throws RequestNotValidException {
+    public void deleteDriver(Long id) {
         driverRepository.findById(id).orElseThrow(()-> new ResourceNotFound("Driver not found"));
         ratingService.deleteByDriver(id);
         carService.deleteByDriver(id);
