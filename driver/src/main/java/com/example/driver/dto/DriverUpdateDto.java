@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record DriverUpdateDto(
-
-        @NotEmpty
-        Long id,
         @NotNull @NotEmpty
         String username,
         @Email
@@ -18,6 +15,5 @@ public record DriverUpdateDto(
         String phoneNumber,
         @NotNull @NotEmpty
         String gender
-
 ) {
 }

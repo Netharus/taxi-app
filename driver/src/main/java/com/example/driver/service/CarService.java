@@ -27,7 +27,7 @@ public class CarService {
         Car car = carMapper.fromCarCreateDto(carCreateDto);
         car.setDriver(driver);
 
-        return car = carRepository.save(car);
+        return carRepository.save(car);
     }
 
     @Transactional
@@ -48,10 +48,7 @@ public class CarService {
     }
 
     public void deleteById(Long carId) {
-        Car car = carRepository.findById(carId).isPresent() ? carRepository.findById(carId).get() : null;
-        if (car != null) {
-            throw new ResourceNotFound("Car not found");
-        }
+        carRepository.findById(carId).orElseThrow(()-> new ResourceNotFound("Car not found"));
         carRepository.deleteById(carId);
     }
 }

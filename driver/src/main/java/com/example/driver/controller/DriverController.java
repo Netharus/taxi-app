@@ -44,10 +44,10 @@ public class DriverController {
     }
 
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public DriverResponse updateDriver(@Valid @RequestBody DriverUpdateDto driverUpdateDto) {
-        return driverService.updateDriver(driverUpdateDto);
+    public DriverResponse updateDriver(@Valid @RequestBody DriverUpdateDto driverUpdateDto, @PathVariable Long driverId) {
+        return driverService.updateDriver(driverUpdateDto,driverId);
     }
 
     @GetMapping
@@ -74,16 +74,6 @@ public class DriverController {
     public DriverResponse getDriver(@PathVariable Long driverId) {
         return driverService.getDriverById(driverId);
     }
-//    @GetMapping()
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<DriverResponse> getDriversByRating(@RequestParam Double rating) {
-//        return driverService.findDriversByRating(rating);
-//    }
-
-//    @GetMapping("/rating/{driverId}")
-//    public ResponseEntity<List<Rating>> getRating(@PathVariable Long driverId) {
-//       return driverService.getTenLastrating(driverId);
-//    }
 
     @PostMapping("/cars")
     @ResponseStatus(HttpStatus.CREATED)

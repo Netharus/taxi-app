@@ -1,8 +1,6 @@
 package com.example.driver.service;
 
 import com.example.driver.dto.RatingCreateDto;
-import com.example.driver.exceptions.ResourceNotFound;
-import com.example.driver.mapper.RatingMapper;
 import com.example.driver.model.Driver;
 import com.example.driver.model.Rating;
 import com.example.driver.model.enums.SortField;
@@ -21,7 +19,6 @@ public class RatingService {
 
     private final RatingRepository ratingRepository;
 
-    private final RatingMapper ratingMapper;
 
     public Rating saveRating(Rating rating) {
         return ratingRepository.save(rating);
@@ -30,13 +27,6 @@ public class RatingService {
     @Transactional
     public void deleteByDriver(Long driverId) {
         ratingRepository.deleteAllByDriverId(driverId);
-    }
-
-    public double getDriverRating(Long driverId) {
-        if (driverId == null) {
-            throw new ResourceNotFound("DriverId is empty");
-        }
-        return ratingRepository.averageGradeByDriverId(driverId);
     }
 
     public Double addRating(RatingCreateDto ratingCreateDto, Driver driver) {
