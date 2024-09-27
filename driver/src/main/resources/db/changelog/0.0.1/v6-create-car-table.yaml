@@ -48,3 +48,5 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: car
+        - dropAllForeignKeyConstraints:
+            baseTableName: fk_car_driver

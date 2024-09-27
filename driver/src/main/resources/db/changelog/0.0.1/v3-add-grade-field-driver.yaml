@@ -9,3 +9,7 @@ databaseChangeLog:
               - column:
                   name: grade
                   type: double
+      rollback:
+        - dropColumn:
+            tableName: driver
+            columnName: grade
