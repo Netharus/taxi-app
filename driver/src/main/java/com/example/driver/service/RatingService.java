@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class RatingService {
-    private final static Integer AMOUNT_OF_GRADES = 20;
+    private final static int AMOUNT_OF_GRADES = 20;
 
     private final RatingRepository ratingRepository;
 
