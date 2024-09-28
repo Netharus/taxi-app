@@ -37,13 +37,13 @@ public class RatingService {
                 .passengerId(ratingCreateDto.passengerId())
                 .build();
         ratingRepository.save(rating);
-        return averageGrade(getLastNAmountOfRating(driver.getId()));
+        return averageGrade(getLastObjectsOfRating(driver.getId(),AMOUNT_OF_GRADES));
     }
 
-    private Page<Rating> getLastNAmountOfRating(Long byId) {
+    private Page<Rating> getLastObjectsOfRating(Long byId, int amountOfGrades) {
         SortField sortField = SortField.valueOf("ID");
         Sort.Direction direction = Sort.Direction.DESC;
-        Pageable pageable = PageRequest.of(0, AMOUNT_OF_GRADES, direction, sortField.getDatabaseFieldName());
+        Pageable pageable = PageRequest.of(0, amountOfGrades, direction, sortField.getDatabaseFieldName());
         return ratingRepository.findByDriverId(pageable, byId);
     }
 
