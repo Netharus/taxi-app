@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: v 1-2-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: rating
+      changes:
+        - createTable:
+            tableName: rating
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: grade
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: driver_id
+                  type: BIGINT
+              - column:
+                  name: passenger_id
+                  type: BIGINT
+        - addForeignKeyConstraint:
+            baseTableName: rating
+            baseColumnNames: driver_id
+            referencedTableName: driver
+            referencedColumnNames: id
+            constraintName: fk_rating_driver_id
+            onDelete: CASCADE
+      rollback:
+        - dropAllForeignKeyConstraints:
+            baseTableName: fk_rating_driver_id
+        - dropTable:
+            tableName: rating
+
+
+
