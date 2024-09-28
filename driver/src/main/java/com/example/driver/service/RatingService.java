@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class RatingService {
+    private final static Integer AMOUNT_OF_GRADES = 20;
 
     private final RatingRepository ratingRepository;
 
@@ -36,13 +37,13 @@ public class RatingService {
                 .passengerId(ratingCreateDto.passengerId())
                 .build();
         ratingRepository.save(rating);
-        return averageGrade(getTenLastRating(driver.getId()));
+        return averageGrade(getLastNAmountOfRating(driver.getId()));
     }
 
-    private Page<Rating> getTenLastRating(Long byId) {
+    private Page<Rating> getLastNAmountOfRating(Long byId) {
         SortField sortField = SortField.valueOf("ID");
         Sort.Direction direction = Sort.Direction.DESC;
-        Pageable pageable = PageRequest.of(0, 10, direction, sortField.getDatabaseFieldName());
+        Pageable pageable = PageRequest.of(0, AMOUNT_OF_GRADES, direction, sortField.getDatabaseFieldName());
         return ratingRepository.findByDriverId(pageable, byId);
     }
 

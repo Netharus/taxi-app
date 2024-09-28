@@ -24,13 +24,13 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,name = "brand")
+    @Column(nullable = false, name = "brand")
     private String brand;
 
-    @Column(nullable = false, name="color")
+    @Column(nullable = false, name = "color")
     private String color;
 
-    @Column(nullable = false,unique = true,name = "registration_number")
+    @Column(nullable = false, unique = true, name = "registration_number")
     private String registrationNumber;
 
     @ManyToOne

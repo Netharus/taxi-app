@@ -37,7 +37,6 @@ public class DriverService {
 
     @Transactional
     public DriverResponse createDriver(DriverCreateDto driverCreateDto) {
-
         Driver driver = driverMapper.fromDriverRequest(driverCreateDto);
         Driver savedDriver = driverRepository.save(driver);
 
@@ -76,7 +75,6 @@ public class DriverService {
 
     @Transactional
     public DriverResponse updateDriver(DriverUpdateDto driverUpdateDto, Long driverId) {
-
         Driver updateDriver = driverMapper.fromDriverUpdate(driverUpdateDto);
         Driver savedDriver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new ResourceNotFound("Driver not found"));
@@ -108,10 +106,8 @@ public class DriverService {
 
     @Transactional
     public void addRating(RatingCreateDto ratingCreateDto) {
-
         Driver driver = driverRepository.findById(ratingCreateDto.driverId())
                 .orElseThrow(()->new ResourceNotFound("Driver not found"));
-
         driver.setGrade(ratingService.addRating(ratingCreateDto, driver));
         driverRepository.save(driver);
     }
@@ -119,7 +115,6 @@ public class DriverService {
     @Transactional(readOnly = true)
     public DriverResponse getDriverById(Long driverId) {
         Driver driver = driverRepository.findById(driverId).orElseThrow(() -> new ResourceNotFound("Driver not found"));
-
         return driverMapper.toDriverResponse(driver, carService.getCarsByDriverId(driverId));
     }
 

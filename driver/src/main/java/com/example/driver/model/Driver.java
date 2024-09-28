@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,13 +46,13 @@ public class Driver {
 
     @Builder.Default
     @OneToMany(mappedBy = "driver")
-    private List<Rating> ratingList=new ArrayList<>();
+    private List<Rating> ratingList = new ArrayList<>();
 
-    @Column( name="grade")
+    @Column(name = "grade")
     private Double grade;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name= "gender")
+    @Column(nullable = false, name = "gender")
     private Gender gender;
 
     @Builder.Default
@@ -61,5 +62,5 @@ public class Driver {
 
     @Builder.Default
     @OneToMany(mappedBy = "driver")
-    private List<Car> carList=new ArrayList<>();
+    private List<Car> carList = new ArrayList<>();
 }

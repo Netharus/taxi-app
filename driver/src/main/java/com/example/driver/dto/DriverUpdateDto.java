@@ -1,19 +1,18 @@
 package com.example.driver.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record DriverUpdateDto(
-        @NotNull @NotEmpty
+        @NotBlank
         String username,
         @Email
         String email,
-        @NotNull @NotEmpty
+        @NotBlank
         String fullName,
-        @NotNull @NotEmpty
+        @NotBlank
         String phoneNumber,
-        @NotNull @NotEmpty
+        @NotBlank
         String gender
 ) {
 }
