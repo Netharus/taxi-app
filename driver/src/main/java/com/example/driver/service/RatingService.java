@@ -37,7 +37,7 @@ public class RatingService {
                 .passengerId(ratingCreateDto.passengerId())
                 .build();
         ratingRepository.save(rating);
-        return averageGrade(getDriverLastRatings(driver.getId(),AMOUNT_OF_GRADES));
+        return averageGrade(getDriverLastRatings(driver.getId(), AMOUNT_OF_GRADES));
     }
 
     private Page<Rating> getDriverLastRatings(Long driverId, int limit) {
