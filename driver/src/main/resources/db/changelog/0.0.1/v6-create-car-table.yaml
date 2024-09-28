@@ -46,7 +46,7 @@ databaseChangeLog:
             constraintName: fk_car_driver
             onDelete: CASCADE
       rollback:
-        - dropTable:
-            tableName: car
         - dropAllForeignKeyConstraints:
             baseTableName: fk_car_driver
+        - dropTable:
+            tableName: car

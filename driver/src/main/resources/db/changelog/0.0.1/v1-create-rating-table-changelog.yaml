@@ -36,9 +36,10 @@ databaseChangeLog:
             constraintName: fk_rating_driver_id
             onDelete: CASCADE
       rollback:
-        - dropTable:
-            tableName: rating
         - dropAllForeignKeyConstraints:
             baseTableName: fk_rating_driver_id
+        - dropTable:
+            tableName: rating
+
 
 
