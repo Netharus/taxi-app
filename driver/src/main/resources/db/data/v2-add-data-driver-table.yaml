@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: v2-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: driver
+        - tableIsEmpty:
+            tableName: driver
+      changes:
+        - loadData:
+            file: db/data/driver.csv
+            tableName: driver

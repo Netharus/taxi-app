@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: v4-1-1
+      author: Mikhail Kondratsiuk
+      changes:
+        - addColumn:
+            tableName: driver
+            columns:
+              - column:
+                  name: gender
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    checkConstraint: "role in ('MALE', 'FEMALE')"
+      rollback:
+        - dropColumn:
+            tableName: driver
+            columnName: gender

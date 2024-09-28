@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-1-1
+      author: Mikhail Kondratsiuk
+      changes:
+        - addColumn:
+            tableName: driver
+            columns:
+              - column:
+                  name: grade
+                  type: double
+      rollback:
+        - dropColumn:
+            tableName: driver
+            columnName: grade
