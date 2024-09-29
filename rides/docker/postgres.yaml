@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  rides-db:
+    image: postgres:14.3
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rides
+    ports:
+      - '5435:5432'
