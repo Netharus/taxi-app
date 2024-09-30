@@ -7,6 +7,7 @@ import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.dto.RatingCreateDto;
+import com.example.driver.dto.RideResponseForDriver;
 import com.example.driver.service.CarService;
 import com.example.driver.service.DriverService;
 import jakarta.validation.Valid;
@@ -83,5 +84,11 @@ public class DriverController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable Long carId) {
         carService.deleteById(carId);
+    }
+
+    @PostMapping("/notify")
+    @ResponseStatus(HttpStatus.OK)
+    public void notifyDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {
+        driverService.notifyDriver(rideResponseForDriver);
     }
 }

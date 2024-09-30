@@ -29,7 +29,7 @@ public class Rides {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "driver_id")
+    @Column(name = "driver_id")
     private Long driverId;
 
     @Column(nullable = false, name = "passenger_id")

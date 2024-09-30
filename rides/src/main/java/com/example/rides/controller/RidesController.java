@@ -1,7 +1,9 @@
 package com.example.rides.controller;
 
+import com.example.rides.dto.RideCreateResponseDto;
 import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
+import com.example.rides.model.Rides;
 import com.example.rides.service.RidesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,15 +23,15 @@ public class RidesController {
     private final RidesService ridesService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public void addRide(@RequestBody RidesCreateDto ridesCreateDto) {
-        ridesService.addRide(ridesCreateDto);
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public RideCreateResponseDto addRide(@RequestBody RidesCreateDto ridesCreateDto) {
+        return ridesService.addRide(ridesCreateDto);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint, @RequestParam String endPoint) {
-        return ridesService.checkPrice(startPoint,endPoint);
+    public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint,
+                                                             @RequestParam String endPoint) {
+        return ridesService.checkPrice(startPoint, endPoint);
     }
 }

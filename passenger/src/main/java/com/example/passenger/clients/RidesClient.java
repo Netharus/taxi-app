@@ -1,5 +1,6 @@
 package com.example.passenger.clients;
 
+import com.example.passenger.dto.RideCreateResponseDto;
 import com.example.passenger.dto.RidesCreateDto;
 import com.example.passenger.dto.RidesInformationResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,4 +15,6 @@ public interface RidesClient {
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/rides")
     RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint,
                                                       @RequestParam String endPoint);
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/rides")
+    RideCreateResponseDto createRide(@RequestBody RidesCreateDto ridesCreateDto);
 }

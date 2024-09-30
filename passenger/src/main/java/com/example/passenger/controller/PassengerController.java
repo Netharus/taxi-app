@@ -5,6 +5,7 @@ import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.dto.RatingCreateDto;
+import com.example.passenger.dto.RideCreateResponseDto;
 import com.example.passenger.dto.RidesCreateDto;
 import com.example.passenger.dto.RidesInformationResponseDto;
 import com.example.passenger.service.PassengerService;
@@ -75,7 +76,7 @@ public class PassengerController {
     }
     @PostMapping("/rides")
     @ResponseStatus(HttpStatus.OK)
-    public RidesInformationResponseDto checkRidesInformation(@Valid @RequestBody RidesCreateDto ridesCreateDto){
+    public RideCreateResponseDto checkRidesInformation(@Valid @RequestBody RidesCreateDto ridesCreateDto){
         return passengerService.createRide(ridesCreateDto);
     }
 }

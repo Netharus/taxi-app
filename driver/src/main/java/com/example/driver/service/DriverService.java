@@ -8,6 +8,7 @@ import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.dto.RatingCreateDto;
+import com.example.driver.dto.RideResponseForDriver;
 import com.example.driver.exceptions.ResourceNotFound;
 import com.example.driver.mapper.DriverMapper;
 import com.example.driver.model.Driver;
@@ -123,5 +124,9 @@ public class DriverService {
         Driver driver = driverRepository.findById(carCreateDto.driverId())
                 .orElseThrow(() -> new ResourceNotFound("Driver not found"));
         return carService.addCar(carCreateDto, driver);
+    }
+
+    public void notifyDriver(RideResponseForDriver rideResponseForDriver) {
+        System.out.println(rideResponseForDriver.toString());
     }
 }

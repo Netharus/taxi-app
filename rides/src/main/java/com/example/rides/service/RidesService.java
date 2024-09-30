@@ -1,7 +1,9 @@
 package com.example.rides.service;
 
+import com.example.rides.clients.DriverClient;
 import com.example.rides.dto.NominatimResponse;
 import com.example.rides.dto.OSRMResponse;
+import com.example.rides.dto.RideCreateResponseDto;
 import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
 import com.example.rides.mapper.RidesMapper;
@@ -22,6 +24,8 @@ public class RidesService {
     private final RidesRepository ridesRepository;
 
     private final RestClient restClient;
+
+    private final DriverClient driverClient;
 
     private final RidesMapper ridesMapper;
 
@@ -63,11 +67,13 @@ public class RidesService {
         return distance * pricePerMeter;
     }
 
-    public void addRide(RidesCreateDto ridesCreateDto) {
+    public RideCreateResponseDto addRide(RidesCreateDto ridesCreateDto) {
         Rides ride = ridesMapper.fromRidesCreateDto(ridesCreateDto);
         OSRMResponse osrmResponse = calculateDistance(ride.getStartPoint(), ride.getEndPoint());
         ride.setPrice(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER));
         ridesRepository.save(ride);
+        driverClient.notifyDriver(ridesMapper.toRideResponseForDriver(ride));
+        return ridesMapper.toRideCreateResponseDto(ride,null,ride.getId());
     }
 
     public RidesInformationResponseDto checkPrice(String startPoint, String endPoint) {

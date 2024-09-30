@@ -1,6 +1,7 @@
-package com.example.rides.dto;
+package com.example.passenger.dto;
 
-import com.example.rides.model.enums.Status;
+
+import com.example.passenger.model.enums.Status;
 
 public record RideCreateResponseDto(
         Long rideId,

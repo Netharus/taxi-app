@@ -7,6 +7,7 @@ import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.dto.RatingCreateDto;
+import com.example.passenger.dto.RideCreateResponseDto;
 import com.example.passenger.dto.RidesCreateDto;
 import com.example.passenger.dto.RidesInformationResponseDto;
 import com.example.passenger.exceptions.ResourceNotFound;
@@ -14,6 +15,7 @@ import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
 import com.example.passenger.repository.PassengerRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -104,5 +106,10 @@ public class PassengerService {
     public RidesInformationResponseDto getRideInformation(String startPoint, String endPoint){
         return ridesClient
                 .checkRidesInformation(startPoint,endPoint);
+    }
+
+    public RideCreateResponseDto createRide(RidesCreateDto ridesCreateDto) {
+        return ridesClient
+                .createRide(ridesCreateDto);
     }
 }
