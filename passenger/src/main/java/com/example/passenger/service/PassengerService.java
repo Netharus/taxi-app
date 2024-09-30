@@ -1,11 +1,14 @@
 package com.example.passenger.service;
 
 
+import com.example.passenger.clients.RidesClient;
 import com.example.passenger.dto.ContainerPassengerResponseDto;
 import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.dto.RatingCreateDto;
+import com.example.passenger.dto.RidesCreateDto;
+import com.example.passenger.dto.RidesInformationResponseDto;
 import com.example.passenger.exceptions.ResourceNotFound;
 import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Service
@@ -29,6 +33,8 @@ public class PassengerService {
     private final RatingService ratingService;
 
     private final PassengerMapper passengerMapper;
+
+    private final RidesClient ridesClient;
 
 
     @Transactional
@@ -93,5 +99,10 @@ public class PassengerService {
         passenger.setGrade(ratingService.addRating(ratingCreateDto, passenger));
         passengerRepository.save(passenger);
         return passengerMapper.toPassengerResponseDto(passenger);
+    }
+
+    public RidesInformationResponseDto getRideInformation(String startPoint, String endPoint){
+        return ridesClient
+                .checkRidesInformation(startPoint,endPoint);
     }
 }

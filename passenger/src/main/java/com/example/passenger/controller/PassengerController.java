@@ -5,6 +5,8 @@ import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.dto.RatingCreateDto;
+import com.example.passenger.dto.RidesCreateDto;
+import com.example.passenger.dto.RidesInformationResponseDto;
 import com.example.passenger.service.PassengerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,5 +67,15 @@ public class PassengerController {
     @ResponseStatus(HttpStatus.CREATED)
     public PassengerResponseDto addRating(@Valid @RequestBody RatingCreateDto ratingCreateDto) {
         return passengerService.addRating(ratingCreateDto);
+    }
+    @GetMapping("/rides")
+    @ResponseStatus(HttpStatus.OK)
+    public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint, @RequestParam String endPoint){
+        return passengerService.getRideInformation(startPoint,endPoint);
+    }
+    @PostMapping("/rides")
+    @ResponseStatus(HttpStatus.OK)
+    public RidesInformationResponseDto checkRidesInformation(@Valid @RequestBody RidesCreateDto ridesCreateDto){
+        return passengerService.createRide(ridesCreateDto);
     }
 }
