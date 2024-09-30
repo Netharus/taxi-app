@@ -1,9 +1,9 @@
 package com.example.rides.controller;
 
+import com.example.rides.dto.DriverResponseForRideDto;
 import com.example.rides.dto.RideCreateResponseDto;
 import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
-import com.example.rides.model.Rides;
 import com.example.rides.service.RidesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,5 +33,11 @@ public class RidesController {
     public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint,
                                                              @RequestParam String endPoint) {
         return ridesService.checkPrice(startPoint, endPoint);
+    }
+
+    @PostMapping("/accept")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void acceptRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
+        ridesService.acceptRide(driverResponseForRideDto, rideId);
     }
 }

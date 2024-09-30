@@ -91,4 +91,10 @@ public class DriverController {
     public void notifyDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {
         driverService.notifyDriver(rideResponseForDriver);
     }
+
+    @PostMapping("/accept_ride")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void acceptRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.acceptRide(driverId, rideId);
+    }
 }

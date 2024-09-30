@@ -79,4 +79,10 @@ public class PassengerController {
     public RideCreateResponseDto checkRidesInformation(@Valid @RequestBody RidesCreateDto ridesCreateDto){
         return passengerService.createRide(ridesCreateDto);
     }
+
+    @PostMapping("/notify")
+    @ResponseStatus(HttpStatus.OK)
+    public void notifyPassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto){
+        System.out.println(rideCreateResponseDto.toString());
+    }
 }

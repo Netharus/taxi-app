@@ -1,6 +1,8 @@
 package com.example.rides.service;
 
 import com.example.rides.clients.DriverClient;
+import com.example.rides.clients.PassengerClient;
+import com.example.rides.dto.DriverResponseForRideDto;
 import com.example.rides.dto.NominatimResponse;
 import com.example.rides.dto.OSRMResponse;
 import com.example.rides.dto.RideCreateResponseDto;
@@ -8,10 +10,11 @@ import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
 import com.example.rides.mapper.RidesMapper;
 import com.example.rides.model.Rides;
+import com.example.rides.model.enums.Status;
 import com.example.rides.repository.RidesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -26,6 +29,8 @@ public class RidesService {
     private final RestClient restClient;
 
     private final DriverClient driverClient;
+
+    private final PassengerClient passengerClient;
 
     private final RidesMapper ridesMapper;
 
@@ -73,12 +78,12 @@ public class RidesService {
         ride.setPrice(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER));
         ridesRepository.save(ride);
         driverClient.notifyDriver(ridesMapper.toRideResponseForDriver(ride));
-        return ridesMapper.toRideCreateResponseDto(ride,null,ride.getId());
+        return ridesMapper.toRideCreateResponseDto(ride, null, ride.getId());
     }
 
     public RidesInformationResponseDto checkPrice(String startPoint, String endPoint) {
         OSRMResponse osrmResponse = calculateDistance(startPoint, endPoint);
-        RidesInformationResponseDto ridesInformationResponseDto = ridesMapper.toRidesInformationResponseDto(calcPrice(osrmResponse.routes().getFirst().distance(),PRICE_PER_METER),
+        RidesInformationResponseDto ridesInformationResponseDto = ridesMapper.toRidesInformationResponseDto(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER),
                 osrmResponse
                         .routes()
                         .getFirst()
@@ -88,5 +93,15 @@ public class RidesService {
                         .getFirst()
                         .duration());
         return ridesInformationResponseDto;
+    }
+
+    public void acceptRide(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
+
+        Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
+        ride.setStatus(Status.ACCEPTED);
+        ride.setDriverId(driverResponseForRideDto.id());
+        passengerClient.notifyPassenger(
+                ridesMapper
+                        .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
 }

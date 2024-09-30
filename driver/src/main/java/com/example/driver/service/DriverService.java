@@ -1,6 +1,7 @@
 package com.example.driver.service;
 
 
+import com.example.driver.client.RidesClient;
 import com.example.driver.dto.CarResponseDto;
 import com.example.driver.dto.CarStandaloneCreateDto;
 import com.example.driver.dto.ContainerDriverResponse;
@@ -36,15 +37,16 @@ public class DriverService {
 
     private final CarService carService;
 
+    private final RidesClient ridesClient;
+
     @Transactional
     public DriverResponse createDriver(DriverCreateDto driverCreateDto) {
         Driver driver = driverMapper.fromDriverRequest(driverCreateDto);
         Driver savedDriver = driverRepository.save(driver);
 
         if (driverCreateDto.carCreateDtoList() != null) {
-            driverCreateDto.carCreateDtoList().forEach(carCreateDto -> {
-                savedDriver.getCarList().add(carService.addCar(carCreateDto, savedDriver));
-            });
+            driverCreateDto.carCreateDtoList().forEach(carCreateDto ->
+                    savedDriver.getCarList().add(carService.addCar(carCreateDto, savedDriver)));
         }
 
         Rating rating = Rating.builder()
@@ -128,5 +130,13 @@ public class DriverService {
 
     public void notifyDriver(RideResponseForDriver rideResponseForDriver) {
         System.out.println(rideResponseForDriver.toString());
+    }
+
+    public void acceptRide(Long driverId, Long rideId) {
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new ResourceNotFound("Driver not found"));
+        driverMapper.toDriverResponseForRideDto(driver,carService.getCarsByDriverId(driverId));
+        ridesClient.acceptRide(driverMapper
+                .toDriverResponseForRideDto(driver,carService.getCarsByDriverId(driverId)),rideId);
     }
 }
