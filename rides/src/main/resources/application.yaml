@@ -2,10 +2,10 @@ server:
   port: 8083
 spring:
   application:
-    name: driver
+    name: rides
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5435/driver
+    url: jdbc:postgresql://localhost:5435/rides
     username: postgres
     password: postgres
   jpa:
