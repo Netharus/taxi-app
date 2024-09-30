@@ -41,12 +41,14 @@ public class Rides {
     @Column(nullable = false, name = "end_point")
     private String endPoint;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
-    private Status status;
+    private Status status=Status.CREATED;
 
+    @Builder.Default
     @Column(nullable = false, name = "order_date_time")
-    private LocalDateTime orderDateTime;
+    private LocalDateTime orderDateTime=LocalDateTime.now();
 
     @Column(nullable = false, name = "price")
     private Double price;
