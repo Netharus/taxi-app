@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         String message = "Duplicate key error: " + ex.getMostSpecificCause().getMessage();
         body.put(MESSAGE, message);
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<?> handleException(Exception exception){
