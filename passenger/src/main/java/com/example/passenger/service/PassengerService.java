@@ -17,6 +17,8 @@ import com.example.passenger.model.Rating;
 import com.example.passenger.repository.PassengerRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class PassengerService {
 
     private final RidesClient ridesClient;
 
+    private final static Logger logger= LoggerFactory.getLogger(PassengerService.class);
 
     @Transactional
     public PassengerResponseDto createPassenger(PassengerCreateDto passengerCreateDto) {
@@ -111,5 +114,13 @@ public class PassengerService {
     public RideCreateResponseDto createRide(RidesCreateDto ridesCreateDto) {
         return ridesClient
                 .createRide(ridesCreateDto);
+    }
+
+    public void notifyPassenger(RideCreateResponseDto rideCreateResponseDto) {
+        logger.info(rideCreateResponseDto.toString());
+    }
+
+    public void notifyAboutEnding(RideCreateResponseDto rideCreateResponseDto) {
+        logger.info("Set grade for driver {}", rideCreateResponseDto.driverInformation().toString());
     }
 }

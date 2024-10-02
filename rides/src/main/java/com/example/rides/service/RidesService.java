@@ -14,6 +14,7 @@ import com.example.rides.model.enums.Status;
 import com.example.rides.repository.RidesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -72,6 +73,7 @@ public class RidesService {
         return distance * pricePerMeter;
     }
 
+    @Transactional
     public RideCreateResponseDto addRide(RidesCreateDto ridesCreateDto) {
         Rides ride = ridesMapper.fromRidesCreateDto(ridesCreateDto);
         OSRMResponse osrmResponse = calculateDistance(ride.getStartPoint(), ride.getEndPoint());
@@ -83,18 +85,20 @@ public class RidesService {
 
     public RidesInformationResponseDto checkPrice(String startPoint, String endPoint) {
         OSRMResponse osrmResponse = calculateDistance(startPoint, endPoint);
-        RidesInformationResponseDto ridesInformationResponseDto = ridesMapper.toRidesInformationResponseDto(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER),
-                osrmResponse
-                        .routes()
-                        .getFirst()
-                        .distance(),
-                osrmResponse
-                        .routes()
-                        .getFirst()
-                        .duration());
+        RidesInformationResponseDto ridesInformationResponseDto = ridesMapper
+                .toRidesInformationResponseDto(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER),
+                    osrmResponse
+                            .routes()
+                            .getFirst()
+                            .distance(),
+                    osrmResponse
+                            .routes()
+                            .getFirst()
+                            .duration());
         return ridesInformationResponseDto;
     }
 
+    @Transactional
     public void acceptRide(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
 
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
@@ -103,5 +107,26 @@ public class RidesService {
         passengerClient.notifyPassenger(
                 ridesMapper
                         .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
+    }
+    //TODO change signature and logic
+    public void declineRide(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
+        Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
+        ride.setStatus(Status.DECLINED);
+        passengerClient.notifyPassenger(ridesMapper
+                .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
+    }
+    public void changeStatus(Status status, DriverResponseForRideDto driverResponseForRideDto,Long rideId) {
+        Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
+        ride.setStatus(status);
+        passengerClient.notifyPassenger(ridesMapper
+                .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
+    }
+
+    public void endDrive(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
+        Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
+        ride.setStatus(Status.COMPLETED);
+        //driverClient.notifyAboutEndDriver(ridesMapper.toRideResponseForDriver(ride));
+        passengerClient.notifyAboutEndPassenger(ridesMapper
+                .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
 }

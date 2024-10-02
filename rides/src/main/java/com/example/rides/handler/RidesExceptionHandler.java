@@ -39,13 +39,13 @@ public class RidesExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<?> handleException(Exception exception) {
-//        Map<String, Object> body = new HashMap<>();
-//        body.put(MESSAGE, "Internal server error");
-//        return new ResponseEntity<>(body,
-//                HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception exception) {
+        Map<String, Object> body = new HashMap<>();
+        body.put(MESSAGE, "Internal server error");
+        return new ResponseEntity<>(body,
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleValidationException(HttpMessageNotReadableException exception) {

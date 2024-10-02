@@ -8,6 +8,7 @@ import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.dto.RatingCreateDto;
 import com.example.driver.dto.RideResponseForDriver;
+import com.example.driver.model.enums.Status;
 import com.example.driver.service.CarService;
 import com.example.driver.service.DriverService;
 import jakarta.validation.Valid;
@@ -86,15 +87,37 @@ public class DriverController {
         carService.deleteById(carId);
     }
 
-    @PostMapping("/notify")
+    @PostMapping("/rides/notify")
     @ResponseStatus(HttpStatus.OK)
     public void notifyDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {
         driverService.notifyDriver(rideResponseForDriver);
     }
 
-    @PostMapping("/accept_ride")
+    @PostMapping("/rides/accept")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void acceptRide(@RequestParam Long driverId, @RequestParam Long rideId) {
         driverService.acceptRide(driverId, rideId);
+    }
+
+    @PostMapping("/rides/decline")
+    @ResponseStatus(HttpStatus.OK)
+    public void declineRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.declineRide(driverId, rideId);
+    }
+
+    @PostMapping("/rides/change_status")
+    @ResponseStatus(HttpStatus.OK)
+    public void declineRide(@RequestParam Status status, @RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.changeStatus(status,driverId,rideId);
+    }
+    @PostMapping("/rides/end")
+    @ResponseStatus(HttpStatus.OK)
+    public void endRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.endRide(driverId,rideId);
+    }
+    @PostMapping("/rides/notify_end")
+    @ResponseStatus(HttpStatus.OK)
+    public void notifyAboutEndDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {
+        driverService.notifyAboutEndDriver(rideResponseForDriver);
     }
 }

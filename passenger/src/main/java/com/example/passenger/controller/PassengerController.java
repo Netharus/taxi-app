@@ -80,9 +80,15 @@ public class PassengerController {
         return passengerService.createRide(ridesCreateDto);
     }
 
-    @PostMapping("/notify")
+    @PostMapping("/rides/notify")
     @ResponseStatus(HttpStatus.OK)
     public void notifyPassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto){
-        System.out.println(rideCreateResponseDto.toString());
+        passengerService.notifyPassenger(rideCreateResponseDto);
+    }
+
+    @PostMapping("/rides/notify_end")
+    @ResponseStatus(HttpStatus.OK)
+    public void notifyEndRidePassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto){
+        passengerService.notifyAboutEnding(rideCreateResponseDto);
     }
 }

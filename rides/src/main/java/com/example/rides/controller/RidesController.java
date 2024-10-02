@@ -4,6 +4,7 @@ import com.example.rides.dto.DriverResponseForRideDto;
 import com.example.rides.dto.RideCreateResponseDto;
 import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
+import com.example.rides.model.enums.Status;
 import com.example.rides.service.RidesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,21 @@ public class RidesController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void acceptRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
         ridesService.acceptRide(driverResponseForRideDto, rideId);
+    }
+    @PostMapping("/decline")
+    @ResponseStatus(HttpStatus.OK)
+    public void declineRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
+        ridesService.declineRide(driverResponseForRideDto, rideId);
+    }
+    @PostMapping("/change_status")
+    @ResponseStatus(HttpStatus.OK)
+    public void changeRideStatus(@RequestParam Status status, @RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
+        ridesService.changeStatus(status,driverResponseForRideDto, rideId);
+    }
+
+    @PostMapping("/end")
+    @ResponseStatus(HttpStatus.OK)
+    void endRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto,  @RequestParam Long rideId){
+        ridesService.endDrive(driverResponseForRideDto,rideId);
     }
 }
