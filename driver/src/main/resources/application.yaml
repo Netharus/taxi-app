@@ -34,7 +34,7 @@ spring:
         spring:
           json:
             type:
-              mapping: RatingCreateDto:com.example.driver.dto.RatingCreateDto
+              mapping: RatingCreateDto:com.example.driver.dto.RatingCreateDto, RideResponseForDriver:com.example.driver.dto.RideResponseForDriver
             trusted:
               packages: "*"
 token:

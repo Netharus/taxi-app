@@ -175,7 +175,7 @@ public class DriverService {
     }
 
     public void notifyAboutEndDriver(RideResponseForDriver rideResponseForDriver) {
-        logger.info("Set grade for passenger");
+        logger.info("Set grade for passenger {}", rideResponseForDriver);
     }
 
     public void addRatingToPassenger(RatingCreateDto ratingCreateDto) {

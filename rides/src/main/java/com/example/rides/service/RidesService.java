@@ -8,6 +8,7 @@ import com.example.rides.dto.OSRMResponse;
 import com.example.rides.dto.RideCreateResponseDto;
 import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
+import com.example.rides.kafka.KafkaProducer;
 import com.example.rides.mapper.RidesMapper;
 import com.example.rides.model.Rides;
 import com.example.rides.model.enums.Status;
@@ -34,6 +35,8 @@ public class RidesService {
     private final PassengerClient passengerClient;
 
     private final RidesMapper ridesMapper;
+
+    private final KafkaProducer kafkaProducer;
 
     private OSRMResponse calculateDistance(String startAddress, String endAddress) {
 
@@ -79,7 +82,7 @@ public class RidesService {
         OSRMResponse osrmResponse = calculateDistance(ride.getStartPoint(), ride.getEndPoint());
         ride.setPrice(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER));
         ridesRepository.save(ride);
-        driverClient.notifyDriver(ridesMapper.toRideResponseForDriver(ride));
+        kafkaProducer.sendRideResponseToDriver(ridesMapper.toRideResponseForDriver(ride));
         return ridesMapper.toRideCreateResponseDto(ride, null, ride.getId());
     }
 
@@ -104,7 +107,7 @@ public class RidesService {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(Status.ACCEPTED);
         ride.setDriverId(driverResponseForRideDto.id());
-        passengerClient.notifyPassenger(
+        kafkaProducer.notifyPassenger(
                 ridesMapper
                         .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
@@ -112,21 +115,21 @@ public class RidesService {
     public void declineRide(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(Status.DECLINED);
-        passengerClient.notifyPassenger(ridesMapper
+        kafkaProducer.notifyPassenger(ridesMapper
                 .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
     public void changeStatus(Status status, DriverResponseForRideDto driverResponseForRideDto,Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(status);
-        passengerClient.notifyPassenger(ridesMapper
+        kafkaProducer.notifyPassenger(ridesMapper
                 .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
 
     public void endDrive(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(Status.COMPLETED);
-        //driverClient.notifyAboutEndDriver(ridesMapper.toRideResponseForDriver(ride));
-        passengerClient.notifyAboutEndPassenger(ridesMapper
+        kafkaProducer.notifyDriver(ridesMapper.toRideResponseForDriver(ride));
+        kafkaProducer.notifyPassenger(ridesMapper
                 .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
 }
