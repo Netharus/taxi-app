@@ -90,14 +90,14 @@ public class RidesService {
         OSRMResponse osrmResponse = calculateDistance(startPoint, endPoint);
         RidesInformationResponseDto ridesInformationResponseDto = ridesMapper
                 .toRidesInformationResponseDto(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER),
-                    osrmResponse
-                            .routes()
-                            .getFirst()
-                            .distance(),
-                    osrmResponse
-                            .routes()
-                            .getFirst()
-                            .duration());
+                        osrmResponse
+                                .routes()
+                                .getFirst()
+                                .distance(),
+                        osrmResponse
+                                .routes()
+                                .getFirst()
+                                .duration());
         return ridesInformationResponseDto;
     }
 
@@ -111,6 +111,7 @@ public class RidesService {
                 ridesMapper
                         .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
+
     //TODO change signature and logic
     public void declineRide(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
@@ -118,7 +119,8 @@ public class RidesService {
         kafkaProducer.notifyPassenger(ridesMapper
                 .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
-    public void changeStatus(Status status, DriverResponseForRideDto driverResponseForRideDto,Long rideId) {
+
+    public void changeStatus(Status status, DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(status);
         kafkaProducer.notifyPassenger(ridesMapper

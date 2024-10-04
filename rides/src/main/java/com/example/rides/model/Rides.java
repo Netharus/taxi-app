@@ -1,5 +1,6 @@
 package com.example.rides.model;
 
+import com.example.rides.model.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.example.rides.model.enums.Status;
 
 import java.time.LocalDateTime;
 
@@ -44,11 +44,11 @@ public class Rides {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
-    private Status status=Status.CREATED;
+    private Status status = Status.CREATED;
 
     @Builder.Default
     @Column(nullable = false, name = "order_date_time")
-    private LocalDateTime orderDateTime=LocalDateTime.now();
+    private LocalDateTime orderDateTime = LocalDateTime.now();
 
     @Column(nullable = false, name = "price")
     private Double price;

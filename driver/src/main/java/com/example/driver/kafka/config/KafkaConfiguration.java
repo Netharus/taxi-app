@@ -16,6 +16,7 @@ public class KafkaConfiguration {
     public NewTopic addDriverNotificationTopic() {
         return new NewTopic("driver-notification-topic", 3, (short) 1);
     }
+
     @Bean
     public NewTopic addDriverRideNotificationTopic() {
         return new NewTopic("driver-ride-notification-topic", 3, (short) 1);

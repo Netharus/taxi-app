@@ -37,6 +37,7 @@ public class KafkaProducer {
     public void notifyDriver(RideResponseForDriver rideResponseForDriver) {
         sendMessage(DRIVER_NOTIFICATION_TOPIC, generateTransactionalKey(), rideResponseForDriver);
     }
+
     private void sendMessage(String topic, String key, Object message) {
         CompletableFuture<SendResult<String, Object>> future =
                 kafkaTemplate.send(topic, key, message);

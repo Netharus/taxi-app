@@ -10,8 +10,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-import java.sql.Driver;
-
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RidesMapper {
@@ -22,7 +20,7 @@ public interface RidesMapper {
 
     @Mapping(target = "driverInformation", source = "driverResponseForRideDto")
     @Mapping(target = "rideId", source = "id")
-    RideCreateResponseDto toRideCreateResponseDto(Rides ride, DriverResponseForRideDto driverResponseForRideDto,Long id);
+    RideCreateResponseDto toRideCreateResponseDto(Rides ride, DriverResponseForRideDto driverResponseForRideDto, Long id);
 
     @Mapping(target = "rideId", source = "id")
     RideResponseForDriver toRideResponseForDriver(Rides ride);

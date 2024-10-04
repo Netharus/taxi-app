@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -109,13 +108,15 @@ public class DriverController {
     @PostMapping("/rides/change_status")
     @ResponseStatus(HttpStatus.OK)
     public void declineRide(@RequestParam Status status, @RequestParam Long driverId, @RequestParam Long rideId) {
-        driverService.changeStatus(status,driverId,rideId);
+        driverService.changeStatus(status, driverId, rideId);
     }
+
     @PostMapping("/rides/end")
     @ResponseStatus(HttpStatus.OK)
     public void endRide(@RequestParam Long driverId, @RequestParam Long rideId) {
-        driverService.endRide(driverId,rideId);
+        driverService.endRide(driverId, rideId);
     }
+
     @PostMapping("/rides/notify_end")
     @ResponseStatus(HttpStatus.OK)
     public void notifyAboutEndDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {

@@ -49,7 +49,7 @@ public class CarService {
 
     public void deleteById(Long carId) {
         carRepository.findById(carId)
-                .orElseThrow(()-> new ResourceNotFound("Car not found"));
+                .orElseThrow(() -> new ResourceNotFound("Car not found"));
         carRepository.deleteById(carId);
     }
 }

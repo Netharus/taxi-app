@@ -42,7 +42,7 @@ public class PassengerController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PassengerResponseDto modifyPassenger(@Valid @RequestBody PassengerUpdateDto passengerUpdateDto, @PathVariable Long id) {
-        return passengerService.updatePassenger(passengerUpdateDto,id);
+        return passengerService.updatePassenger(passengerUpdateDto, id);
     }
 
     @GetMapping("/{id}")
@@ -69,28 +69,31 @@ public class PassengerController {
     public PassengerResponseDto addRating(@Valid @RequestBody RatingCreateDto ratingCreateDto) {
         return passengerService.addRating(ratingCreateDto);
     }
+
     @GetMapping("/rides")
     @ResponseStatus(HttpStatus.OK)
-    public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint, @RequestParam String endPoint){
-        return passengerService.getRideInformation(startPoint,endPoint);
+    public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint, @RequestParam String endPoint) {
+        return passengerService.getRideInformation(startPoint, endPoint);
     }
+
     @PostMapping("/rides")
     @ResponseStatus(HttpStatus.OK)
-    public RideCreateResponseDto checkRidesInformation(@Valid @RequestBody RidesCreateDto ridesCreateDto){
+    public RideCreateResponseDto checkRidesInformation(@Valid @RequestBody RidesCreateDto ridesCreateDto) {
         return passengerService.createRide(ridesCreateDto);
     }
 
     @PostMapping("/rides/notify")
     @ResponseStatus(HttpStatus.OK)
-    public void notifyPassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto){
+    public void notifyPassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto) {
         passengerService.notifyPassenger(rideCreateResponseDto);
     }
 
     @PostMapping("/rides/notify_end")
     @ResponseStatus(HttpStatus.OK)
-    public void notifyEndRidePassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto){
+    public void notifyEndRidePassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto) {
         passengerService.notifyAboutEnding(rideCreateResponseDto);
     }
+
     @PostMapping("/rating/rate_driver")
     @ResponseStatus(HttpStatus.OK)
     public void sendRating(@RequestBody RatingCreateDto ratingCreateDto) {

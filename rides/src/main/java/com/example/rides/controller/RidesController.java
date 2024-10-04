@@ -41,20 +41,22 @@ public class RidesController {
     public void acceptRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
         ridesService.acceptRide(driverResponseForRideDto, rideId);
     }
+
     @PostMapping("/decline")
     @ResponseStatus(HttpStatus.OK)
     public void declineRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
         ridesService.declineRide(driverResponseForRideDto, rideId);
     }
+
     @PostMapping("/change_status")
     @ResponseStatus(HttpStatus.OK)
     public void changeRideStatus(@RequestParam Status status, @RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
-        ridesService.changeStatus(status,driverResponseForRideDto, rideId);
+        ridesService.changeStatus(status, driverResponseForRideDto, rideId);
     }
 
     @PostMapping("/end")
     @ResponseStatus(HttpStatus.OK)
-    void endRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto,  @RequestParam Long rideId){
-        ridesService.endDrive(driverResponseForRideDto,rideId);
+    void endRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId) {
+        ridesService.endDrive(driverResponseForRideDto, rideId);
     }
 }

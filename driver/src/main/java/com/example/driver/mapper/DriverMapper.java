@@ -29,5 +29,5 @@ public interface DriverMapper {
     ContainerDriverResponse toContainerDriverResponse(Page<DriverResponse> driverResponses);
 
     @Mapping(target = "carResponseDto", source = "carResponseDto")
-    DriverResponseForRideDto toDriverResponseForRideDto(Driver driver,List<CarResponseDto> carResponseDto);
+    DriverResponseForRideDto toDriverResponseForRideDto(Driver driver, List<CarResponseDto> carResponseDto);
 }

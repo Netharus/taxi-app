@@ -79,6 +79,7 @@ public class DriverExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(ConversionFailedException.class)
     public ResponseEntity<String> handleConflict(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
