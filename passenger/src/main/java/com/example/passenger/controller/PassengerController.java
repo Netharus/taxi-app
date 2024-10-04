@@ -91,4 +91,9 @@ public class PassengerController {
     public void notifyEndRidePassenger(@RequestBody RideCreateResponseDto rideCreateResponseDto){
         passengerService.notifyAboutEnding(rideCreateResponseDto);
     }
+    @PostMapping("/rating/rate_driver")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendRating(@RequestBody RatingCreateDto ratingCreateDto) {
+        passengerService.addRatingToPassenger(ratingCreateDto);
+    }
 }

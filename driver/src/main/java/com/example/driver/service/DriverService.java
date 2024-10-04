@@ -11,6 +11,7 @@ import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.dto.RatingCreateDto;
 import com.example.driver.dto.RideResponseForDriver;
 import com.example.driver.exceptions.ResourceNotFound;
+import com.example.driver.kafka.KafkaProducer;
 import com.example.driver.mapper.DriverMapper;
 import com.example.driver.model.Driver;
 import com.example.driver.model.Rating;
@@ -19,6 +20,7 @@ import com.example.driver.repository.DriverRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,8 @@ public class DriverService {
     private final RidesClient ridesClient;
 
     private static final Logger logger = LoggerFactory.getLogger(DriverService.class);
+
+    private final KafkaProducer kafkaProducer;
 
     @Transactional
     public DriverResponse createDriver(DriverCreateDto driverCreateDto) {
@@ -172,5 +176,9 @@ public class DriverService {
 
     public void notifyAboutEndDriver(RideResponseForDriver rideResponseForDriver) {
         logger.info("Set grade for passenger");
+    }
+
+    public void addRatingToPassenger(RatingCreateDto ratingCreateDto) {
+        kafkaProducer.sendMessage(ratingCreateDto);
     }
 }

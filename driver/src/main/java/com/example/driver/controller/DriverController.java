@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -119,5 +120,11 @@ public class DriverController {
     @ResponseStatus(HttpStatus.OK)
     public void notifyAboutEndDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {
         driverService.notifyAboutEndDriver(rideResponseForDriver);
+    }
+
+    @PostMapping("/rating/rate_passenger")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendRating(@RequestBody RatingCreateDto ratingCreateDto) {
+        driverService.addRatingToPassenger(ratingCreateDto);
     }
 }

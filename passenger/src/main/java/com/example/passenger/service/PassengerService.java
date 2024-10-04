@@ -11,6 +11,7 @@ import com.example.passenger.dto.RideCreateResponseDto;
 import com.example.passenger.dto.RidesCreateDto;
 import com.example.passenger.dto.RidesInformationResponseDto;
 import com.example.passenger.exceptions.ResourceNotFound;
+import com.example.passenger.kafka.KafkaProducer;
 import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
@@ -41,6 +42,8 @@ public class PassengerService {
     private final RidesClient ridesClient;
 
     private final static Logger logger= LoggerFactory.getLogger(PassengerService.class);
+
+    private final KafkaProducer kafkaProducer;
 
     @Transactional
     public PassengerResponseDto createPassenger(PassengerCreateDto passengerCreateDto) {
@@ -122,5 +125,9 @@ public class PassengerService {
 
     public void notifyAboutEnding(RideCreateResponseDto rideCreateResponseDto) {
         logger.info("Set grade for driver {}", rideCreateResponseDto.driverInformation().toString());
+    }
+
+    public void addRatingToPassenger(RatingCreateDto ratingCreateDto) {
+        kafkaProducer.sendMessage(ratingCreateDto);
     }
 }
