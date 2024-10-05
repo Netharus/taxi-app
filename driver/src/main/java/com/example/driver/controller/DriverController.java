@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,24 +96,28 @@ public class DriverController {
     }
 
     @PostMapping("/rides/accept")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void acceptRide(@RequestParam Long driverId, @RequestParam Long rideId) {
         driverService.acceptRide(driverId, rideId);
     }
 
     @PostMapping("/rides/decline")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.OK)
     public void declineRide(@RequestParam Long driverId, @RequestParam Long rideId) {
         driverService.declineRide(driverId, rideId);
     }
 
     @PostMapping("/rides/change_status")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.OK)
     public void declineRide(@RequestParam Status status, @RequestParam Long driverId, @RequestParam Long rideId) {
         driverService.changeStatus(status, driverId, rideId);
     }
 
     @PostMapping("/rides/end")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.OK)
     public void endRide(@RequestParam Long driverId, @RequestParam Long rideId) {
         driverService.endRide(driverId, rideId);

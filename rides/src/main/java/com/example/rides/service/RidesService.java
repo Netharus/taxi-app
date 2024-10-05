@@ -8,6 +8,7 @@ import com.example.rides.dto.OSRMResponse;
 import com.example.rides.dto.RideCreateResponseDto;
 import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
+import com.example.rides.exceptions.ResourceNotFound;
 import com.example.rides.kafka.KafkaProducer;
 import com.example.rides.mapper.RidesMapper;
 import com.example.rides.model.Rides;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
+
 
 @Service
 @RequiredArgsConstructor
@@ -49,9 +51,11 @@ public class RidesService {
                 .build(startCoordinates, endCoordinates)
                 .toString();
 
-        OSRMResponse response = restClient.get().uri(url).retrieve().body(OSRMResponse.class);
-
-        return response;
+        return restClient
+                .get()
+                .uri(url)
+                .retrieve()
+                .body(OSRMResponse.class);
     }
 
     private String geocodeAddress(String address) {
@@ -65,7 +69,11 @@ public class RidesService {
 
         NominatimResponse[] response = restClient.get().uri(url).retrieve().body(NominatimResponse[].class);
 
-        return response[0].lon() + "," + response[0].lat();
+        if (response != null && response.length > 0) {
+            return response[0].lon() + "," + response[0].lat();
+        } else {
+            throw new ResourceNotFound("Incorrect address");
+        }
     }
 
     private String encodeAddress(String address) {
@@ -88,7 +96,7 @@ public class RidesService {
 
     public RidesInformationResponseDto checkPrice(String startPoint, String endPoint) {
         OSRMResponse osrmResponse = calculateDistance(startPoint, endPoint);
-        RidesInformationResponseDto ridesInformationResponseDto = ridesMapper
+        return ridesMapper
                 .toRidesInformationResponseDto(calcPrice(osrmResponse.routes().getFirst().distance(), PRICE_PER_METER),
                         osrmResponse
                                 .routes()
@@ -98,12 +106,10 @@ public class RidesService {
                                 .routes()
                                 .getFirst()
                                 .duration());
-        return ridesInformationResponseDto;
     }
 
     @Transactional
     public void acceptRide(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
-
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(Status.ACCEPTED);
         ride.setDriverId(driverResponseForRideDto.id());
@@ -112,7 +118,7 @@ public class RidesService {
                         .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
 
-    //TODO change signature and logic
+    @Transactional
     public void declineRide(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(Status.DECLINED);
@@ -120,6 +126,7 @@ public class RidesService {
                 .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
 
+    @Transactional
     public void changeStatus(Status status, DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(status);
@@ -127,6 +134,7 @@ public class RidesService {
                 .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
     }
 
+    @Transactional
     public void endDrive(DriverResponseForRideDto driverResponseForRideDto, Long rideId) {
         Rides ride = ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found"));
         ride.setStatus(Status.COMPLETED);

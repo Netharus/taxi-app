@@ -39,6 +39,13 @@ public class RidesExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(AssertionError.class)
+    public ResponseEntity<?> handleException(AssertionError ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put(MESSAGE, ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<?> handleException(Exception exception) {
 //        Map<String, Object> body = new HashMap<>();

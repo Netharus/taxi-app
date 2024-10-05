@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,12 +74,14 @@ public class PassengerController {
 
     @GetMapping("/rides")
     @ResponseStatus(HttpStatus.OK)
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint, @RequestParam String endPoint) {
         return passengerService.getRideInformation(startPoint, endPoint);
     }
 
     @PostMapping("/rides")
     @ResponseStatus(HttpStatus.OK)
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     public RideCreateResponseDto checkRidesInformation(@Valid @RequestBody RidesCreateDto ridesCreateDto) {
         return passengerService.createRide(ridesCreateDto);
     }
