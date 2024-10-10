@@ -7,6 +7,8 @@ import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
 import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.dto.RatingCreateDto;
+import com.example.driver.dto.RideResponseForDriver;
+import com.example.driver.model.enums.Status;
 import com.example.driver.service.CarService;
 import com.example.driver.service.DriverService;
 import jakarta.validation.Valid;
@@ -15,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,6 +86,52 @@ public class DriverController {
     @DeleteMapping("/cars/{carId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable Long carId) {
-        carService.deleteById(carId);
+        carService.deleteCarById(carId);
+    }
+
+    @PostMapping("/rides/notify")
+    @ResponseStatus(HttpStatus.OK)
+    public void notifyDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {
+        driverService.notifyDriver(rideResponseForDriver);
+    }
+
+    @PostMapping("/rides/accept")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void acceptRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.acceptRide(driverId, rideId);
+    }
+
+    @PostMapping("/rides/decline")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
+    @ResponseStatus(HttpStatus.OK)
+    public void declineRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.declineRide(driverId, rideId);
+    }
+
+    @PostMapping("/rides/change_status")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
+    @ResponseStatus(HttpStatus.OK)
+    public void declineRide(@RequestParam Status status, @RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.changeStatus(status, driverId, rideId);
+    }
+
+    @PostMapping("/rides/end")
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
+    @ResponseStatus(HttpStatus.OK)
+    public void endRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+        driverService.endRide(driverId, rideId);
+    }
+
+    @PostMapping("/rides/notify_end")
+    @ResponseStatus(HttpStatus.OK)
+    public void notifyAboutEndDriver(@RequestBody RideResponseForDriver rideResponseForDriver) {
+        driverService.notifyAboutEndDriver(rideResponseForDriver);
+    }
+
+    @PostMapping("/rating/rate_passenger")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendRating(@RequestBody RatingCreateDto ratingCreateDto) {
+        driverService.addRatingToPassenger(ratingCreateDto);
     }
 }

@@ -19,6 +19,6 @@ public interface PassengerMapper {
 
     Passenger fromPassengerUpdateDto(PassengerUpdateDto passengerUpdateDto);
 
-    @Mapping(target="pageNum", source = "number")
+    @Mapping(target = "pageNum", source = "number")
     ContainerPassengerResponseDto toContainerResponseDto(Page<PassengerResponseDto> content);
 }

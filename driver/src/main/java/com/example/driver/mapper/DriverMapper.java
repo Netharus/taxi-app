@@ -4,6 +4,7 @@ import com.example.driver.dto.CarResponseDto;
 import com.example.driver.dto.ContainerDriverResponse;
 import com.example.driver.dto.DriverCreateDto;
 import com.example.driver.dto.DriverResponse;
+import com.example.driver.dto.DriverResponseForRideDto;
 import com.example.driver.dto.DriverUpdateDto;
 import com.example.driver.model.Driver;
 import org.mapstruct.Mapper;
@@ -26,4 +27,7 @@ public interface DriverMapper {
 
     @Mapping(target = "pageNum", source = "number")
     ContainerDriverResponse toContainerDriverResponse(Page<DriverResponse> driverResponses);
+
+    @Mapping(target = "carResponseDto", source = "carResponseDto")
+    DriverResponseForRideDto toDriverResponseForRideDto(Driver driver, List<CarResponseDto> carResponseDto);
 }

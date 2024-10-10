@@ -21,9 +21,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final static String MESSAGE="message";
+    private final static String MESSAGE = "message";
 
-    private final static String ERROR_DETAILS_MESSAGE="Invalid enum value: '%s' for the field: '%s'. The value must be one of: %s.";
+    private final static String ERROR_DETAILS_MESSAGE = "Invalid enum value: '%s' for the field: '%s'. The value must be one of: %s.";
 
     @ExceptionHandler(RequestNotValidException.class)
     public ResponseEntity<?> handleException(RequestNotValidException exception) {
@@ -44,30 +44,32 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         String message = "Duplicate key error: " + ex.getMostSpecificCause().getMessage();
         body.put(MESSAGE, message);
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleException(Exception exception){
+    public ResponseEntity<?> handleException(Exception exception) {
         Map<String, Object> body = new HashMap<>();
         body.put(MESSAGE, "Internal Server Error");
         return new ResponseEntity<>(body,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleValidationException(HttpMessageNotReadableException exception) {
         String errorDetails = "";
 
         if (exception.getCause() instanceof InvalidFormatException) {
             InvalidFormatException ifx = (InvalidFormatException) exception.getCause();
-            if (ifx.getTargetType()!=null && ifx.getTargetType().isEnum()) {
+            if (ifx.getTargetType() != null && ifx.getTargetType().isEnum()) {
                 errorDetails = String.format(ERROR_DETAILS_MESSAGE,
                         ifx.getValue(), ifx.getPath().get(ifx
-                                .getPath()
-                                .size()-1)
+                                        .getPath()
+                                        .size() - 1)
                                 .getFieldName(),
                         Arrays.toString(ifx
-                                        .getTargetType()
-                                        .getEnumConstants()));
+                                .getTargetType()
+                                .getEnumConstants()));
             }
         }
         Map<String, Object> body = new HashMap<>();

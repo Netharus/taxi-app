@@ -11,7 +11,7 @@ databaseChangeLog:
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
-                    checkConstraint: "role in ('MALE', 'FEMALE')"
+                    checkConstraint: "gender in ('MALE', 'FEMALE')"
       rollback:
         - dropColumn:
             tableName: driver

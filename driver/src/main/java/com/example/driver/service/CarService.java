@@ -47,9 +47,10 @@ public class CarService {
         carRepository.deleteAllByDriverId(driverId);
     }
 
-    public void deleteById(Long carId) {
+    @Transactional
+    public void deleteCarById(Long carId) {
         carRepository.findById(carId)
-                .orElseThrow(()-> new ResourceNotFound("Car not found"));
+                .orElseThrow(() -> new ResourceNotFound("Car not found"));
         carRepository.deleteById(carId);
     }
 }

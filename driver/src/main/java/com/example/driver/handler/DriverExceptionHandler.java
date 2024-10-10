@@ -2,6 +2,7 @@ package com.example.driver.handler;
 
 import com.example.driver.exceptions.ResourceNotFound;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class DriverExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         String message = "Duplicate key error: " + ex.getMostSpecificCause().getMessage();
         body.put(MESSAGE, message);
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(Exception.class)
@@ -77,5 +78,10 @@ public class DriverExceptionHandler {
             errors.computeIfAbsent(fieldName, k -> new ArrayList<>()).add(errorMessage);
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConversionFailedException.class)
+    public ResponseEntity<String> handleConflict(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

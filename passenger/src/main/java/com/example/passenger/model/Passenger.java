@@ -1,21 +1,20 @@
 package com.example.passenger.model;
 
 import com.example.passenger.model.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +31,13 @@ public class Passenger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,name = "first_name")
+    @Column(nullable = false, name = "first_name")
     private String firstName;
 
-    @Column(nullable = false,unique = true,name = "email")
+    @Column(nullable = false, unique = true, name = "email")
     private String email;
 
-    @Column(nullable = false,unique = true,name = "phone_number")
+    @Column(nullable = false, unique = true, name = "phone_number")
     private String phoneNumber;
 
     @Builder.Default
@@ -46,7 +45,7 @@ public class Passenger {
     @Column(nullable = false, name = "role")
     private Role role = Role.USER;
 
-    @Column( name="grade")
+    @Column(name = "grade")
     private Double grade;
 
     @Builder.Default
