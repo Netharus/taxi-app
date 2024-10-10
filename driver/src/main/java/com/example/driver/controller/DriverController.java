@@ -86,7 +86,7 @@ public class DriverController {
     @DeleteMapping("/cars/{carId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable Long carId) {
-        carService.deleteById(carId);
+        carService.deleteCarById(carId);
     }
 
     @PostMapping("/rides/notify")

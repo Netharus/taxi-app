@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RidesClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/accept")
-    void acceptRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId);
+    void acceptRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam("rideId") Long rideId);
 
     @RequestMapping(method = RequestMethod.POST, value = "/decline")
-    void declineRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId);
+    void declineRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam("rideId") Long rideId);
 
     @RequestMapping(method = RequestMethod.POST, value = "/change_status")
-    void changeRideStatus(@RequestParam Status status, @RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId);
+    void changeRideStatus(@RequestParam("status") Status status, @RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam("rideId") Long rideId);
 
     @RequestMapping(method = RequestMethod.POST, value = "/end")
-    void endRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam Long rideId);
+    void endRide(@RequestBody DriverResponseForRideDto driverResponseForRideDto, @RequestParam("rideId") Long rideId);
 }

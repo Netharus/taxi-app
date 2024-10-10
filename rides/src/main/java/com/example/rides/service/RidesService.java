@@ -6,6 +6,7 @@ import com.example.rides.dto.DriverResponseForRideDto;
 import com.example.rides.dto.NominatimResponse;
 import com.example.rides.dto.OSRMResponse;
 import com.example.rides.dto.RideCreateResponseDto;
+import com.example.rides.dto.RideResponseForDriver;
 import com.example.rides.dto.RidesCreateDto;
 import com.example.rides.dto.RidesInformationResponseDto;
 import com.example.rides.exceptions.ResourceNotFound;
@@ -141,5 +142,9 @@ public class RidesService {
         kafkaProducer.notifyDriver(ridesMapper.toRideResponseForDriver(ride));
         kafkaProducer.notifyPassenger(ridesMapper
                 .toRideCreateResponseDto(ridesRepository.save(ride), driverResponseForRideDto, rideId));
+    }
+
+    public RideResponseForDriver getById(Long rideId) {
+        return ridesMapper.toRideResponseForDriver(ridesRepository.findById(rideId).orElseThrow(() -> new ResourceAccessException("Ride not found")));
     }
 }

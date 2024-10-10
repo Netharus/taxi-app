@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RidesClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/v1/rides")
-    RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint,
-                                                      @RequestParam String endPoint);
+    RidesInformationResponseDto checkRidesInformation(@RequestParam("startPoint") String startPoint,
+                                                      @RequestParam("endPoint") String endPoint);
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/rides")
     RideCreateResponseDto createRide(@RequestBody RidesCreateDto ridesCreateDto);

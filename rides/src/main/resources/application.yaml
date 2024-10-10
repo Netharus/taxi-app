@@ -1,6 +1,8 @@
 server:
   port: 8083
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: rides
   datasource:
@@ -16,8 +18,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     producer:
-      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
@@ -26,7 +28,6 @@ spring:
             type:
               mapping: RideResponseForDriver:com.example.rides.dto.RideResponseForDriver, RideCreateResponseDto:com.example.rides.dto.RideCreateResponseDto
     consumer:
-      bootstrap-servers: localhost:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       group-id: driver-group-1
