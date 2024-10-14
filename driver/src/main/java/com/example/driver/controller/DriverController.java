@@ -46,7 +46,7 @@ public class DriverController {
         return driverService.createDriver(driverCreateDto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{driverId}")
     @ResponseStatus(HttpStatus.OK)
     public DriverResponse updateDriver(@Valid @RequestBody DriverUpdateDto driverUpdateDto, @PathVariable Long driverId) {
         return driverService.updateDriver(driverUpdateDto, driverId);
