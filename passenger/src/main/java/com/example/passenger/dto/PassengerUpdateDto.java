@@ -3,7 +3,9 @@ package com.example.passenger.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 public record PassengerUpdateDto(
         @NotBlank
         String firstName,
