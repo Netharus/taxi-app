@@ -1,5 +1,8 @@
 package com.example.rides.dto;
 
+import lombok.Builder;
+
+@Builder
 public record ExceptionMessage(
         String timestamp,
         int status,
