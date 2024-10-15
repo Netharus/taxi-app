@@ -20,6 +20,7 @@ public class RatingService {
 
     private final RatingRepository ratingRepository;
 
+    @Transactional
     public Rating saveRating(Rating rating) {
         return ratingRepository.save(rating);
     }

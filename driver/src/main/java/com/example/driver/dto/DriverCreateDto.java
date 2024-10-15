@@ -3,9 +3,11 @@ package com.example.driver.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public record DriverCreateDto(
         @NotBlank
         String username,
