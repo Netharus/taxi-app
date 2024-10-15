@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -103,10 +104,16 @@ public class DriverService {
     @Transactional(readOnly = true)
     public ContainerDriverResponse findAllByPage(Pageable pageable, String keyword) {
         Page<Driver> driversPage = driverRepository.findAll(keyword, pageable);
-        return driverMapper.toContainerDriverResponse(driversPage.map(driver -> {
-            List<CarResponseDto> carResponseDto = carService.getCarsByDriverId(driver.getId());
-            return driverMapper.toDriverResponse(driver, carResponseDto);
-        }));
+        return ContainerDriverResponse
+                .builder()
+                .driverResponses(driversPage.getContent().stream().map(driver -> {
+                    List<CarResponseDto> carResponseDto = carService.getCarsByDriverId(driver.getId());
+                    return driverMapper.toDriverResponse(driver, carResponseDto);
+                }).collect(Collectors.toList()))
+                .size(driversPage.getSize())
+                .totalPages(driversPage.getTotalPages())
+                .totalElements(driversPage.getTotalElements())
+                .pageNum(driversPage.getNumber()).build();
     }
 
     @Transactional(readOnly = true)
