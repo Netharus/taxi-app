@@ -24,6 +24,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -95,7 +98,13 @@ public class PassengerService {
                 .findAllByPage(keyword, pageable)
                 .map(passengerMapper::toPassengerResponseDto);
 
-        return passengerMapper.toContainerResponseDto(page);
+        return ContainerPassengerResponseDto.builder()
+                .pageNum(page.getNumber())
+                .totalPages(page.getTotalPages())
+                .totalElements(page.getTotalElements())
+                .size(page.getSize())
+                .content(new ArrayList<>(page.getContent()))
+                .build();
     }
 
     @Transactional
