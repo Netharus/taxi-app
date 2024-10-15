@@ -1,7 +1,9 @@
 package com.example.rides.dto;
 
-import java.util.List;
+import lombok.Builder;
 
+import java.util.List;
+@Builder
 public record DriverResponseForRideDto(
         Long id,
         Double grade,
