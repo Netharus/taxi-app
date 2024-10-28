@@ -53,6 +53,7 @@ public class RidesServiceTest {
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenAcceptRide_thenAcceptRide() {
+        // arrange
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
                 .carResponseDto(List.of())
@@ -75,8 +76,10 @@ public class RidesServiceTest {
         when(ridesRepository.findById(rides.getId())).thenReturn(Optional.of(rides));
         when(ridesRepository.save(rides)).thenReturn(rides);
 
+        // act
         ridesService.acceptRide(responseForRideDto, driverId);
 
+        // assert
         verify(kafkaProducer, times(1)).notifyPassenger(rideCreateResponseDto);
 
     }
@@ -84,7 +87,7 @@ public class RidesServiceTest {
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenAcceptRide_thenResourceAccessException() {
-
+        //arrange
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
                 .carResponseDto(List.of())
@@ -93,16 +96,16 @@ public class RidesServiceTest {
                 .fullName("fullName")
                 .build();
 
+        //act & assert
         assertThrows(ResourceAccessException.class, () -> {
             ridesService.acceptRide(responseForRideDto, 1L);
         });
-
-
         verify(kafkaProducer, never()).notifyPassenger(any());
     }
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenDeclineRide_thenAcceptRide() {
+        // arrange
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
                 .carResponseDto(List.of())
@@ -125,8 +128,10 @@ public class RidesServiceTest {
         when(ridesRepository.findById(rides.getId())).thenReturn(Optional.of(rides));
         when(ridesRepository.save(rides)).thenReturn(rides);
 
+        // act
         ridesService.declineRide(responseForRideDto, driverId);
 
+        // assert
         verify(kafkaProducer, times(1)).notifyPassenger(rideCreateResponseDto);
 
     }
@@ -134,7 +139,7 @@ public class RidesServiceTest {
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenDeclineRide_thenResourceAccessException() {
-
+        // arrange
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
                 .carResponseDto(List.of())
@@ -143,16 +148,16 @@ public class RidesServiceTest {
                 .fullName("fullName")
                 .build();
 
+        //act & assert
         assertThrows(ResourceAccessException.class, () -> {
             ridesService.declineRide(responseForRideDto, 1L);
         });
-
-
         verify(kafkaProducer, never()).notifyPassenger(any());
     }
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenChangeStatus_thenAcceptRide() {
+        // arrange
         Status status = Status.ON_WAY_TO_ENDPOINT;
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
@@ -176,14 +181,17 @@ public class RidesServiceTest {
         when(ridesRepository.findById(rides.getId())).thenReturn(Optional.of(rides));
         when(ridesRepository.save(rides)).thenReturn(rides);
 
+        // act
         ridesService.changeStatus(status, responseForRideDto, driverId);
 
+        //assert
         verify(kafkaProducer, times(1)).notifyPassenger(rideCreateResponseDto);
 
     }
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenChangeStatus_thenResourceAccessException() {
+        //arrange
         Status status = Status.ON_WAY_TO_ENDPOINT;
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
@@ -193,17 +201,17 @@ public class RidesServiceTest {
                 .fullName("fullName")
                 .build();
 
+        // act & assert
         assertThrows(ResourceAccessException.class, () -> {
             ridesService.changeStatus(status, responseForRideDto, 1L);
         });
-
-
         verify(kafkaProducer, never()).notifyPassenger(any());
     }
 
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenEndDrive_thenAcceptRide() {
+        //arrange
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
                 .carResponseDto(List.of())
@@ -226,8 +234,10 @@ public class RidesServiceTest {
         when(ridesRepository.findById(rides.getId())).thenReturn(Optional.of(rides));
         when(ridesRepository.save(rides)).thenReturn(rides);
 
+        // act
         ridesService.endDrive(responseForRideDto, driverId);
 
+        //assert
         verify(kafkaProducer, times(1)).notifyPassenger(rideCreateResponseDto);
         verify(kafkaProducer, times(1)).notifyDriver(ridesMapper.toRideResponseForDriver(rides));
 
@@ -236,7 +246,7 @@ public class RidesServiceTest {
 
     @Test
     public void givenDriverResponseForRideDtoAndRideId_whenEndDrive_thenResourceAccessException() {
-
+        // arrange
         DriverResponseForRideDto responseForRideDto = DriverResponseForRideDto
                 .builder()
                 .carResponseDto(List.of())
@@ -245,11 +255,10 @@ public class RidesServiceTest {
                 .fullName("fullName")
                 .build();
 
+        // act & assert
         assertThrows(ResourceAccessException.class, () -> {
             ridesService.endDrive(responseForRideDto, 1L);
         });
-
-
         verify(kafkaProducer, never()).notifyPassenger(any());
     }
 }
