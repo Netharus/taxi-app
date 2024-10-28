@@ -3,7 +3,6 @@ package com.example.passenger.unit.service.util;
 import com.example.passenger.dto.PassengerCreateDto;
 import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
-import com.example.passenger.dto.RatingCreateDto;
 import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
 
@@ -33,7 +32,8 @@ public class UnitTestUtils {
                 .grade(5.)
                 .build();
     }
-    public static Passenger getPassenger(){
+
+    public static Passenger getPassenger() {
         return Passenger.builder()
                 .id(1L)
                 .firstName("firstName")
@@ -42,13 +42,7 @@ public class UnitTestUtils {
                 .grade(5.)
                 .build();
     }
-    public static RatingCreateDto getRatingCreateDto() {
-        return RatingCreateDto.builder()
-                .driverId(1L)
-                .grade(5)
-                .passengerId(1L)
-                .build();
-    }
+
     public static Rating getRating() {
         return Rating.builder()
                 .passenger(getPassenger())
