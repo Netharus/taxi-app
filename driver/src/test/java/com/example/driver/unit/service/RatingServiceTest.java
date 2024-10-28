@@ -37,6 +37,7 @@ public class RatingServiceTest {
 
     @Test
     public void givenRatingCreateDtoAndDriver_whenAddRating_thenReturnDoubleGrade() {
+        // Arrange
         Driver driver = getDriverWithId();
         RatingCreateDto ratingCreateDto = RatingCreateDto.builder()
                 .driverId(1L)

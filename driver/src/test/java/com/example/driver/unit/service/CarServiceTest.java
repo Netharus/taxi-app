@@ -4,17 +4,14 @@ import com.example.driver.dto.CarCreateDto;
 import com.example.driver.dto.CarResponseDto;
 import com.example.driver.dto.CarStandaloneCreateDto;
 import com.example.driver.exceptions.ResourceNotFound;
-import com.example.driver.mapper.CarMapper;
 import com.example.driver.model.Car;
 import com.example.driver.model.Driver;
 import com.example.driver.repository.CarRepository;
 import com.example.driver.service.CarService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -35,8 +32,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CarServiceTest {
 
-    @Spy
-    private CarMapper carMapper = Mappers.getMapper(CarMapper.class);
 
     @Mock
     private CarRepository carRepository;
@@ -46,6 +41,7 @@ public class CarServiceTest {
 
     @Test
     public void givenCarCreateDtoAndDriver_whenAddCar_thenReturnCar() {
+        //Arrange
         CarCreateDto carCreateDto = getCarCreateDto();
         Driver driver = getDriverWithId();
 
@@ -61,8 +57,10 @@ public class CarServiceTest {
         Car expectedCar = getCarWithId();
         expectedCar.setDriver(driver);
 
+        // Act
         Car actualCar = carService.addCar(carCreateDto, driver);
 
+        // Assert
         assertThat(actualCar)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedCar);
@@ -71,6 +69,7 @@ public class CarServiceTest {
 
     @Test
     public void givenCarStandaloneCreateDtoAndDriver_whenAddCar_thenReturnCarResponseDto() {
+        // Arrange
         CarStandaloneCreateDto carStandaloneCreateDto = getCarStandaloneDto();
         Driver driver = getDriverWithId();
         Car car = getCarWithId();
@@ -78,14 +77,17 @@ public class CarServiceTest {
         when(carRepository.save(any(Car.class))).thenReturn(car);
         CarResponseDto expectedCarResponseDto = getCarResponseDto();
 
+        // Act
         CarResponseDto actualCarResponseDto = carService.addCar(carStandaloneCreateDto, driver);
 
+        //Assert
         assertEquals(expectedCarResponseDto, actualCarResponseDto);
         verify(carRepository, times(1)).save(any(Car.class));
     }
 
     @Test
     public void givenDriverId_whenGetCarsByDriverId_thenReturnListCarResponseDto() {
+        // Arrange
         Driver driver = getDriverWithId();
         Car car = getCarWithId();
         car.setDriver(driver);
@@ -94,37 +96,47 @@ public class CarServiceTest {
 
         List<CarResponseDto> expextedCarResponseDtoList = List.of(getCarResponseDto());
 
+        // Act
         List<CarResponseDto> actualCarResponseDtoList = carService.getCarsByDriverId(driver.getId());
 
+        // Assert
         assertEquals(expextedCarResponseDtoList, actualCarResponseDtoList);
-
         verify(carRepository, times(1)).findByDriverId(driver.getId());
     }
 
     @Test
     public void givenDriverId_whenDeleteByDriver_thenDeleteCar() {
+        // Arrange
         long driverId = 1L;
 
+        // Act
         carRepository.deleteAllByDriverId(driverId);
 
+        // Assert
         verify(carRepository, times(1)).deleteAllByDriverId(driverId);
     }
 
     @Test
     public void givenCarId_whenDeleteCarById_thenDeleteCar() {
+        // Arrange
         long carId = 1L;
 
+        // Act
         carRepository.deleteById(carId);
 
+        // Assert
         verify(carRepository, times(1)).deleteById(carId);
     }
 
     @Test
     public void givenCarId_whenDeleteCarById_thenReturnResourceNotFound() {
+        // Arrange
         long carId = 1L;
 
+        // Act
         assertThrows(ResourceNotFound.class, () -> carService.deleteCarById(carId));
 
+        // Assert
         verify(carRepository, times(1)).findById(carId);
     }
 }

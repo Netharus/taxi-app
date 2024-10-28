@@ -72,6 +72,7 @@ public class DriverServiceTest {
 
     @Test
     public void givenDriverCreateDto_whenCreateDriver_thenReturnDriverResponse() {
+        // Arrange
         CarCreateDto carCreateDto = getCarCreateDto();
         DriverCreateDto driverCreateDto = getDriverCreateDto();
         Driver driver = driverMapper.fromDriverRequest(driverCreateDto);
@@ -96,8 +97,10 @@ public class DriverServiceTest {
         when(ratingService.saveRating(any(Rating.class))).thenReturn(rating);
         when(carService.getCarsByDriverId(driver.getId())).thenReturn(List.of(carResponseDto));
 
+        // Act
         DriverResponse actualDriver = driverService.createDriver(driverCreateDto);
 
+        // Assert
         assertEquals(expectedResponse, actualDriver);
         verify(carService, times(1)).addCar(any(CarCreateDto.class), any(Driver.class));
         verify(ratingService, times(1)).saveRating(any(Rating.class));
@@ -105,6 +108,7 @@ public class DriverServiceTest {
 
     @Test
     public void givenPageableAndKeyword_whenFindAllByPage_thenReturnsContainerDriverResponse() {
+        // Arrange
         Pageable pageable = PageRequest.of(0, 10);
         String keyword = "test";
         Driver driver = new Driver();
@@ -119,6 +123,7 @@ public class DriverServiceTest {
                 .build();
         when(driverRepository.findAll(keyword, pageable)).thenReturn(page);
 
+        // Act
         ContainerDriverResponse actualContainerDriverResponse = driverService.findAllByPage(pageable, keyword);
 
         // Assert
@@ -128,14 +133,18 @@ public class DriverServiceTest {
 
     @Test
     public void givenDriverId_whenDeleteDriver_thenDeleteDriverById() {
+        // Arrange
         Driver driver = new Driver();
         driver.setId(1L);
 
         when(driverRepository.findById(driver.getId())).thenReturn(Optional.of(driver));
         doNothing().when(carService).deleteByDriver(driver.getId());
         doNothing().when(ratingService).deleteByDriver(driver.getId());
+
+        // Act
         driverService.deleteDriver(driver.getId());
 
+        // Assert
         verify(driverRepository, times(1)).findById(driver.getId());
         verify(driverRepository, times(1)).deleteById(driver.getId());
 
@@ -144,14 +153,17 @@ public class DriverServiceTest {
 
     @Test
     public void givenDriverId_whenDeleteDriverNotFound_thenReturnResourceNotFound() {
+        //Arrange
         Long id = 1L;
 
+        // Act & assert
         assertThrows(ResourceNotFound.class, () -> driverService.deleteDriver(id));
         verify(driverRepository, times(1)).findById(id);
     }
 
     @Test
     public void givenDriverUpdateDtoAndDriverId_whenUpdateDriver_thenReturnDriverResponse() {
+        // Arrange
         DriverUpdateDto driverUpdateDto = getDriverUpdateDto();
         Driver driver = getDriverWithId();
         CarResponseDto carResponseDto = getCarResponseDto();
@@ -168,8 +180,10 @@ public class DriverServiceTest {
                 .gender(Gender.MALE)
                 .carResponseDto(List.of(carResponseDto)).build();
 
+        // Act
         DriverResponse actualResponse = driverService.updateDriver(driverUpdateDto, driver.getId());
 
+        // Assert
         assertEquals(expectedResponse, actualResponse);
         verify(driverRepository, times(1)).save(any(Driver.class));
         verify(carService, times(1)).getCarsByDriverId(driver.getId());
@@ -178,15 +192,18 @@ public class DriverServiceTest {
 
     @Test
     public void givenDriverUpdateDtoAndDriverId_whenUpdateDriverNotFound_thenReturnResourceNotFound() {
+        // Arrange
         DriverUpdateDto driverUpdateDto = getDriverUpdateDto();
         Driver driver = getDriverWithId();
 
+        // Act & assert
         assertThrows(ResourceNotFound.class, () -> driverService.updateDriver(driverUpdateDto, driver.getId()));
         verify(driverRepository, times(1)).findById(driver.getId());
     }
 
     @Test
     public void givenDriverId_whenFindDriverById_thenReturnDriverResponse() {
+        // Arrange
         Driver driver = getDriverWithId();
         CarResponseDto carResponseDto = getCarResponseDto();
         DriverResponse expectedResponse = DriverResponse.builder()
@@ -202,25 +219,28 @@ public class DriverServiceTest {
         when(driverRepository.findById(driver.getId())).thenReturn(Optional.of(driver));
         when(carService.getCarsByDriverId(driver.getId())).thenReturn(List.of(carResponseDto));
 
+        // Act
         DriverResponse actualResponse = driverService.getDriverById(driver.getId());
 
+        // Assert
         assertEquals(expectedResponse, actualResponse);
-
         verify(driverRepository, times(1)).findById(driver.getId());
         verify(carService, times(1)).getCarsByDriverId(driver.getId());
     }
 
     @Test
     public void givenDriverId_whenFindDriverByIdNotFound_thenReturnResourceNotFound() {
+        // Arrange
         Long id = 1L;
 
+        // Act & assert
         assertThrows(ResourceNotFound.class, () -> driverService.getDriverById(id));
-
         verify(driverRepository, times(1)).findById(id);
     }
 
     @Test
     public void givenValidRatingCreateDto_whenAddRating_thenSaveDriverWithUpdatedGrade() {
+        // Arrange
         RatingCreateDto ratingCreateDto = RatingCreateDto.builder()
                 .driverId(1L)
                 .grade(5)
@@ -233,49 +253,54 @@ public class DriverServiceTest {
         when(driverRepository.findById(ratingCreateDto.driverId())).thenReturn(Optional.of(driver));
         when(ratingService.addRating(ratingCreateDto, driver)).thenReturn(4.5); // Новый рейтинг
 
+        // Act
         driverService.addRating(ratingCreateDto);
 
+        // Assert
         verify(driverRepository, times(1)).findById(ratingCreateDto.driverId());
         verify(ratingService, times(1)).addRating(ratingCreateDto, driver);
         verify(driverRepository, times(1)).save(driver);
-
         assertEquals(4.5, driver.getGrade());
     }
 
     @Test
     public void givenInvalidDriverId_whenAddRating_thenThrowResourceNotFoundException() {
-
+        //Arrange
         RatingCreateDto ratingCreateDto = RatingCreateDto.builder()
                 .driverId(1L)
                 .grade(5)
                 .passengerId(1L)
                 .build();
 
+        // Act & Assert
         assertThrows(ResourceNotFound.class, () -> driverService.addRating(ratingCreateDto));
-
         verify(driverRepository, times(1)).findById(ratingCreateDto.driverId());
     }
 
     @Test
     public void givenCarStandAloneCreateDto_whenAddCar_thenCarResponseDto() {
+        // Arrange
         CarStandaloneCreateDto carStandaloneCreateDto = getCarStandaloneDto();
         Driver driver = getDriverWithId();
         CarResponseDto carResponseDto = getCarResponseDto();
         when(driverRepository.findById(driver.getId())).thenReturn(Optional.of(driver));
         when(carService.addCar(carStandaloneCreateDto, driver)).thenReturn(carResponseDto);
 
+        // Act
         CarResponseDto actualResponseDto = driverService.addCar(carStandaloneCreateDto);
 
+        // Assert
         assertEquals(carResponseDto, actualResponseDto);
         verify(driverRepository, times(1)).findById(driver.getId());
     }
 
     @Test
     public void givenCarStandAloneCreateDto_whenAddCar_thenThrowResourceNotFoundException() {
+        // Arrange
         CarStandaloneCreateDto carStandaloneCreateDto = getCarStandaloneDto();
 
+        // Act & Assert
         assertThrows(ResourceNotFound.class, () -> driverService.addCar(carStandaloneCreateDto));
-
         verify(driverRepository, times(1)).findById(carStandaloneCreateDto.driverId());
     }
 
