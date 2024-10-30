@@ -48,20 +48,20 @@ public class DriverController {
 
     @PutMapping("/{driverId}")
     @ResponseStatus(HttpStatus.OK)
-    public DriverResponse updateDriver(@Valid @RequestBody DriverUpdateDto driverUpdateDto, @PathVariable Long driverId) {
+    public DriverResponse updateDriver(@Valid @RequestBody DriverUpdateDto driverUpdateDto, @PathVariable(name = "driverId") Long driverId) {
         return driverService.updateDriver(driverUpdateDto, driverId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ContainerDriverResponse findAllByPage(@PageableDefault(page = 0, size = 10, sort = "ID", direction = Sort.Direction.DESC) Pageable pageable,
-                                                 @RequestParam(defaultValue = "") String keyword) {
+                                                 @RequestParam(defaultValue = "",name ="keyword" ) String keyword) {
         return driverService.findAllByPage(pageable, keyword);
     }
 
     @DeleteMapping("/{driverId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDriver(@PathVariable Long driverId) {
+    public void deleteDriver(@PathVariable(name = "driverId") Long driverId) {
         driverService.deleteDriver(driverId);
     }
 
@@ -73,7 +73,7 @@ public class DriverController {
 
     @GetMapping("/{driverId}")
     @ResponseStatus(HttpStatus.OK)
-    public DriverResponse getDriver(@PathVariable Long driverId) {
+    public DriverResponse getDriver(@PathVariable(name = "driverId") Long driverId) {
         return driverService.getDriverById(driverId);
     }
 
@@ -85,7 +85,7 @@ public class DriverController {
 
     @DeleteMapping("/cars/{carId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCar(@PathVariable Long carId) {
+    public void deleteCar(@PathVariable(name = "carId") Long carId) {
         carService.deleteCarById(carId);
     }
 
@@ -98,28 +98,28 @@ public class DriverController {
     @PostMapping("/rides/accept")
     @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void acceptRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+    public void acceptRide(@RequestParam(name = "driverId") Long driverId, @RequestParam(name = "rideId") Long rideId) {
         driverService.acceptRide(driverId, rideId);
     }
 
     @PostMapping("/rides/decline")
     @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.OK)
-    public void declineRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+    public void declineRide(@RequestParam(name="driverId") Long driverId, @RequestParam(name = "rideId") Long rideId) {
         driverService.declineRide(driverId, rideId);
     }
 
     @PostMapping("/rides/change_status")
     @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.OK)
-    public void declineRide(@RequestParam Status status, @RequestParam Long driverId, @RequestParam Long rideId) {
+    public void declineRide(@RequestParam(name = "status") Status status, @RequestParam(name="driverId") Long driverId, @RequestParam(name = "rideId") Long rideId) {
         driverService.changeStatus(status, driverId, rideId);
     }
 
     @PostMapping("/rides/end")
     @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 1000, maxDelay = 5000))
     @ResponseStatus(HttpStatus.OK)
-    public void endRide(@RequestParam Long driverId, @RequestParam Long rideId) {
+    public void endRide(@RequestParam(name="driverId") Long driverId, @RequestParam(name="rideId") Long rideId) {
         driverService.endRide(driverId, rideId);
     }
 

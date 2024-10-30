@@ -31,8 +31,8 @@ public class RidesController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public RidesInformationResponseDto checkRidesInformation(@RequestParam String startPoint,
-                                                             @RequestParam String endPoint) {
+    public RidesInformationResponseDto checkRidesInformation(@RequestParam(name="startPoint") String startPoint,
+                                                             @RequestParam(name="endPoint") String endPoint) {
         return ridesService.checkPrice(startPoint, endPoint);
     }
 

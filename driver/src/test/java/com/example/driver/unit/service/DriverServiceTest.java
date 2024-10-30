@@ -34,12 +34,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.driver.unit.service.util.UnitTestUtils.getCarCreateDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getCarResponseDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getCarStandaloneDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getDriverCreateDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getDriverUpdateDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getDriverWithId;
+import static com.example.driver.util.UnitTestUtils.getCarCreateDto;
+import static com.example.driver.util.UnitTestUtils.getCarResponseDto;
+import static com.example.driver.util.UnitTestUtils.getCarStandaloneDto;
+import static com.example.driver.util.UnitTestUtils.getDriverCreateDto;
+import static com.example.driver.util.UnitTestUtils.getDriverUpdateDto;
+import static com.example.driver.util.UnitTestUtils.getDriverWithId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

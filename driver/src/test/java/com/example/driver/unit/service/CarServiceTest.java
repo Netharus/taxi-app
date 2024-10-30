@@ -4,23 +4,26 @@ import com.example.driver.dto.CarCreateDto;
 import com.example.driver.dto.CarResponseDto;
 import com.example.driver.dto.CarStandaloneCreateDto;
 import com.example.driver.exceptions.ResourceNotFound;
+import com.example.driver.mapper.CarMapper;
 import com.example.driver.model.Car;
 import com.example.driver.model.Driver;
 import com.example.driver.repository.CarRepository;
 import com.example.driver.service.CarService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.example.driver.unit.service.util.UnitTestUtils.getCarCreateDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getCarResponseDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getCarStandaloneDto;
-import static com.example.driver.unit.service.util.UnitTestUtils.getCarWithId;
-import static com.example.driver.unit.service.util.UnitTestUtils.getDriverWithId;
+import static com.example.driver.util.UnitTestUtils.getCarCreateDto;
+import static com.example.driver.util.UnitTestUtils.getCarResponseDto;
+import static com.example.driver.util.UnitTestUtils.getCarStandaloneDto;
+import static com.example.driver.util.UnitTestUtils.getCarWithId;
+import static com.example.driver.util.UnitTestUtils.getDriverWithId;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,6 +35,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CarServiceTest {
 
+    @Spy
+    private CarMapper carMapper = Mappers.getMapper(CarMapper.class);
 
     @Mock
     private CarRepository carRepository;

@@ -6,6 +6,7 @@ import com.example.passenger.dto.PassengerResponseDto;
 import com.example.passenger.dto.PassengerUpdateDto;
 import com.example.passenger.dto.RatingCreateDto;
 import com.example.passenger.exceptions.ResourceNotFound;
+import com.example.passenger.mapper.PassengerMapper;
 import com.example.passenger.model.Passenger;
 import com.example.passenger.model.Rating;
 import com.example.passenger.repository.PassengerRepository;
@@ -13,8 +14,10 @@ import com.example.passenger.service.PassengerService;
 import com.example.passenger.service.RatingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -40,6 +43,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PassengerServiceTest {
 
+    @Spy
+    PassengerMapper passengerMapper= Mappers.getMapper(PassengerMapper.class);
     @Mock
     private PassengerRepository passengerRepository;
 

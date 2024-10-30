@@ -43,19 +43,19 @@ public class PassengerController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PassengerResponseDto modifyPassenger(@Valid @RequestBody PassengerUpdateDto passengerUpdateDto, @PathVariable Long id) {
+    public PassengerResponseDto modifyPassenger(@Valid @RequestBody PassengerUpdateDto passengerUpdateDto, @PathVariable(name="id") Long id) {
         return passengerService.updatePassenger(passengerUpdateDto, id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PassengerResponseDto getPassenger(@PathVariable Long id) {
+    public PassengerResponseDto getPassenger(@PathVariable(name="id") Long id) {
         return passengerService.findById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePassenger(@PathVariable Long id) {
+    public void deletePassenger(@PathVariable(name="id") Long id) {
         passengerService.deletePassenger(id);
     }
 
