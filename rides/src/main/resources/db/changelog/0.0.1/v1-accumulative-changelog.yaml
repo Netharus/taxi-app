@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: v1-create-rides-table.yaml
+      relativeToChangelogFile: true

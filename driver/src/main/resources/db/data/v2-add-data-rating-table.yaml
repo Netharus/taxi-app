@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: v2-2
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: rating
+        - tableIsEmpty:
+            tableName: rating
+      changes:
+        - loadData:
+            file: db/data/rating.csv
+            tableName: rating

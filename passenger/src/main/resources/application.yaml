@@ -1,0 +1,43 @@
+server:
+  port: 8082
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: passenger
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5434/passenger
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: RatingCreateDto:com.example.passenger.dto.RatingCreateDto
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: passenger-group-1
+      properties:
+        spring:
+          json:
+            type:
+              mapping: RatingCreateDto:com.example.passenger.dto.RatingCreateDto, RideCreateResponseDto:com.example.passenger.dto.RideCreateResponseDto
+            trusted:
+              packages: "*"
+token:
+  signing:
+    key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
